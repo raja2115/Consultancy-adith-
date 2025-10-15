@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vision Bridge Consultancy</title>
+<meta name="description" content="Vision Bridge Consultancy — Admissions guidance, career counseling, industry-academia collaborations for engineering & medical education. Offices in Chennai & Andhra Pradesh."/>
+<style>
+  :root{
+    --accent:#0b74da;
+    --accent-dark:#084b9b;
+    --muted:#6b7280;
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --radius:12px;
+    --glass: rgba(255,255,255,0.6);
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:#0f172a; line-height:1.45}
+  header{background:linear-gradient(90deg,var(--accent),var(--accent-dark)); color:white; padding:12px 18px; position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between}
+  .brand{display:flex; gap:12px; align-items:center}
+  .logo{width:44px;height:44px;border-radius:10px;background:white;display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:18px}
+  nav{display:flex; gap:8px; align-items:center}
+  nav a{color:white;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600}
+  nav a:hover, nav a.active{background:rgba(255,255,255,0.12)}
+  .container{max-width:1100px;margin:20px auto;padding:0 18px}
+  .home-grid{display:grid; grid-template-columns:1fr; gap:16px}
+  @media(min-width:920px){ .home-grid{grid-template-columns:2fr 1fr} }
+
+  /* Banner */
+  .banner{background:var(--card); border-radius:var(--radius); overflow:hidden; box-shadow:0 10px 30px rgba(8,20,60,0.08); position:relative}
+  .banner img{width:100%;height:340px;object-fit:cover;display:block}
+  .banner .caption{position:absolute;left:18px;bottom:18px;color:white;font-weight:800;text-shadow:0 6px 20px rgba(0,0,0,0.4);background:linear-gradient(90deg, rgba(0,0,0,0.25), rgba(0,0,0,0.12));padding:10px 14px;border-radius:10px}
+
+  /* Announcements */
+  .announcement-card{background:var(--card);padding:14px;border-radius:var(--radius);box-shadow:0 8px 20px rgba(8,20,60,0.06)}
+  .ann-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;max-height:220px;overflow:auto}
+  .ann-item{padding:10px;border-radius:10px;background:linear-gradient(180deg,#fbfdff,#f6f9ff);border:1px solid #eef6ff}
+  .ann-item small{color:var(--muted)}
+
+  /* Cards */
+  .card{background:var(--card);padding:14px;border-radius:var(--radius);box-shadow:0 8px 20px rgba(8,20,60,0.06)}
+  .about-card p{margin:8px 0}
+  .map-preview{width:100%;height:180px;border-radius:10px;border:0}
+
+  /* Table */
+  .table-card{overflow:auto}
+  table{width:100%;border-collapse:collapse;min-width:700px}
+  th,td{padding:10px 12px;border-bottom:1px solid #f1f5fb;text-align:left}
+  th{background:#fbfdff;font-weight:700;color:#092540}
+
+  /* Buttons */
+  .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:white;border:none;cursor:pointer;font-weight:700}
+  .btn.ghost{background:transparent;color:var(--accent);border:2px solid rgba(11,116,218,0.12)}
+  .btn.small{padding:6px 8px;font-size:13px}
+
+  /* Admin panel */
+  .admin-panel{position:fixed;right:18px;bottom:18px;width:360px;max-height:86vh;overflow:auto;background:var(--card);border-radius:12px;padding:12px;box-shadow:0 24px 60px rgba(8,20,60,0.22);z-index:70}
+  .field{display:flex;flex-direction:column;margin-bottom:10px;gap:6px}
+  input,textarea,select{padding:8px;border-radius:8px;border:1px solid #e7f0ff;font-size:14px}
+  .row{display:flex;gap:8px}
+  .muted{color:var(--muted)}
+
+  footer{text-align:center;padding:22px 12px;color:var(--muted)}
+
+  .hide{display:none}
+  @media(max-width:600px){
+    .banner img{height:200px}
+    .admin-panel{left:6px;right:6px;width:auto}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">VB</div>
+    <div>
+      <div style="font-weight:800;font-size:16px">Vision Bridge Consultancy</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.9)">Engineering & Medical Education — Chennai & Andhra Pradesh</div>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#home" class="navlink active" data-target="home">Home</a>
+    <a href="#colleges" class="navlink" data-target="colleges">Colleges</a>
+    <a href="#about" class="navlink" data-target="about">About</a>
+    <a href="#contact" class="navlink" data-target="contact">Contact</a>
+    <button id="admin-open-btn" class="btn small" title="Admin">Admin</button>
+  </nav>
+</header>
+
+<main class="container">
+  <!-- HOME -->
+  <section id="home" class="page">
+    <div class="home-grid">
+      <div>
+        <div class="banner" id="banner">
+          <img id="banner-img" src="" alt="Vision Bridge banner">
+          <div class="caption" id="banner-caption">Vision Bridge — Bridging education and industry</div>
+        </div>
+
+        <div class="announcement-card" style="margin-top:14px">
+          <h3 style="margin:0 0 8px">Announcements</h3>
+          <ul class="ann-list" id="ann-list"></ul>
+          <p class="muted" style="margin-top:10px">Admins can add / edit / remove announcements via Admin panel.</p>
+        </div>
+
+        <div class="card table-card" style="margin-top:14px">
+          <h3 style="margin:0 0 10px">College Details</h3>
+          <div style="overflow:auto">
+            <table id="colleges-table">
+              <thead>
+                <tr><th>Name</th><th>Focus</th><th>Description</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="colleges-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card about-card">
+          <h3 style="margin-top:0">About Vision Bridge (preview)</h3>
+          <p id="about-preview">Vision Bridge Consultancy — 7 years of trusted partnerships in engineering & medical education. We support students, institutions and industry collaboration.</p>
+          <a href="#about" class="btn" style="margin-top:8px;display:inline-block">Read More</a>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">Contact</h3>
+          <p class="muted">Main Office (Chennai)</p>
+          <iframe id="map-frame" class="map-preview" src="" loading="lazy"></iframe>
+          <p style="margin:8px 0 0">Phone: <strong id="phone">9866745085</strong><br/>
+          Phone: <strong id="phone2">8330914141</strong><br/>
+          Phone: <strong id="phone3">9941015004</strong><br/>
+          Email: <strong id="email">info@visionbridge.com</strong></p>
+          <a href="#contact" class="btn" style="margin-top:8px;display:inline-block">Full Contact</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Colleges (page) -->
+  <section id="colleges" class="page hide" style="margin-top:18px">
+    <div class="card table-card">
+      <div style="display:flex;align-items:center;gap:12px">
+        <h2 style="margin:0">Reputed Colleges (Chennai)</h2>
+        <button id="add-college-btn" class="btn small" style="margin-left:auto">Add College</button>
+      </div>
+      <p class="muted">These colleges are associated or frequently consulted by Vision Bridge for engineering placements and collaborations.</p>
+      <table style="margin-top:12px">
+        <thead><tr><th>Name</th><th>Focus</th><th>Description</th><th>Actions</th></tr></thead>
+        <tbody id="colleges-full-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- About (page) -->
+  <section id="about" class="page hide" style="margin-top:18px">
+    <div class="card">
+      <h2>About Vision Bridge Consultancy</h2>
+      <p><strong>Vision Bridge Consultancy</strong>, with offices in Chennai and Andhra Pradesh, has been a trusted partner in the education sector for the past 7 years. Specializing in engineering and medical education, the consultancy has helped numerous institutions and students achieve their goals.</p>
+
+      <h4>Engineering (Tamil Nadu)</h4>
+      <p>In Tamil Nadu, Vision Bridge Consultancy has worked with top engineering colleges, providing services such as:</p>
+      <ul>
+        <li>Admissions guidance</li>
+        <li>Career counseling</li>
+        <li>Industry-academia collaborations</li>
+        <li>Research and development support</li>
+      </ul>
+      <p>The consultancy's expertise has enabled students to secure placements in leading companies, and institutions to improve their infrastructure and curriculum.</p>
+
+      <h4>Medical (Andhra Pradesh)</h4>
+      <p>With a strong network in Andhra Pradesh, Vision Bridge Consultancy has also supported medical colleges, focusing on:</p>
+      <ul>
+        <li>Curriculum development</li>
+        <li>Research initiatives</li>
+        <li>Clinical exposure</li>
+        <li>Internship opportunities</li>
+      </ul>
+
+      <p>Through its work, Vision Bridge Consultancy has bridged the gap between education and industry, empowering students to succeed in their chosen fields. With its presence in Chennai and Andhra Pradesh, the consultancy continues to shape the future of engineering and medical education in the region.</p>
+      <p class="muted">Contact numbers: 9866745085 | 8330914141 | 9941015004</p>
+    </div>
+  </section>
+
+  <!-- Contact (page) -->
+  <section id="contact" class="page hide" style="margin-top:18px">
+    <div class="card">
+      <h2>Contact Vision Bridge Consultancy</h2>
+      <p><strong>Offices:</strong> Chennai & Andhra Pradesh</p>
+      <p><strong>Phone:</strong> 9866745085 / 8330914141 / 9941015004</p>
+      <p><strong>Email:</strong> info@visionbridge.com</p>
+      <p><strong>Address (Chennai):</strong> Office near Education hub, Chennai (exact location on map)</p>
+      <iframe id="map-full" src="" style="width:100%;height:380px;border:0;border-radius:10px;margin-top:12px;"></iframe>
+    </div>
+  </section>
+
+</main>
+
+<!-- Admin Panel -->
+<div id="admin-panel" class="admin-panel hide" aria-hidden="true">
+  <div style="display:flex;align-items:center;gap:8px">
+    <h4 style="margin:0">Admin Console</h4>
+    <button id="admin-logout" class="btn small hide" style="margin-left:auto">Logout</button>
+    <button id="admin-close" class="btn ghost small">Close</button>
+  </div>
+
+  <!-- Login -->
+  <div id="admin-login-form">
+    <p class="muted">Login with admin credentials to update site content. (Demo uses client-side auth)</p>
+    <div class="field"><label>Username</label><input id="admin-username" placeholder="username"></div>
+    <div class="field"><label>Password</label><input id="admin-password" type="password" placeholder="password"></div>
+    <div class="row"><button id="admin-login-btn" class="btn">Login</button><button id="prefill" class="btn ghost">Prefill</button></div>
+    <p class="muted" style="margin-top:8px">Note: For production use server-side auth and database. This demo stores data in localStorage on the browser.</p>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="admin-dashboard" class="hide">
+    <h4 style="margin-top:6px">Manage Content</h4>
+
+    <!-- Banner -->
+    <div style="border-top:1px dashed #eef6ff;padding-top:10px;margin-top:10px">
+      <strong>Banner Images</strong>
+      <div class="field"><label>Image URL</label><input id="banner-url" placeholder="https://...jpg"></div>
+      <div class="row"><input id="banner-caption-input" placeholder="Caption"><button id="add-banner" class="btn small">Add</button></div>
+      <div id="banner-list" style="margin-top:8px"></div>
+    </div>
+
+    <!-- Announcements -->
+    <div style="border-top:1px dashed #eef6ff;padding-top:10px;margin-top:10px">
+      <strong>Announcements</strong>
+      <div class="field"><input id="ann-text" placeholder="Announcement text"><input id="ann-date" type="date"></div>
+      <div class="row"><button id="add-ann" class="btn small">Add</button><button id="clear-anns" class="btn ghost small">Clear All</button></div>
+      <div id="admin-ann-list" style="margin-top:8px"></div>
+    </div>
+
+    <!-- Colleges -->
+    <div style="border-top:1px dashed #eef6ff;padding-top:10px;margin-top:10px">
+      <strong>Colleges</strong>
+      <div class="field"><input id="col-name" placeholder="College name"></div>
+      <div class="field"><input id="col-focus" placeholder="Focus (e.g. Engineering)"></div>
+      <div class="field"><textarea id="col-desc" placeholder="Short description" rows="2"></textarea></div>
+      <div class="row"><button id="add-college" class="btn small">Add College</button><button id="clear-colleges" class="btn ghost small">Clear All</button></div>
+      <div id="admin-col-list" style="margin-top:8px"></div>
+    </div>
+
+    <!-- Site Info -->
+    <div style="border-top:1px dashed #eef6ff;padding-top:10px;margin-top:10px">
+      <strong>Site Info</strong>
+      <div class="field"><input id="site-phone" placeholder="Phone 1"></div>
+      <div class="field"><input id="site-phone2" placeholder="Phone 2"></div>
+      <div class="field"><input id="site-phone3" placeholder="Phone 3"></div>
+      <div class="field"><input id="site-email" placeholder="Email"></div>
+      <div class="field"><input id="site-address" placeholder="Address"></div>
+      <div class="row"><button id="save-site-info" class="btn small">Save</button></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © <span id="year"></span> Vision Bridge Consultancy — Demo site
+</footer>
+
+<script>
+/* Single-file Vision Bridge site
+   - Admin (client-side): raja@1114 / 2115@Raja
+   - Data persisted in localStorage under key 'vb_data_v1'
+   - Important: client-side auth is NOT secure for production
+*/
+
+const ADMIN_USER = 'raja@1114';
+const ADMIN_PASS = '2115@Raja';
+
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+const defaultData = {
+  banners: [
+    {id:uid(), url:'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop', caption:'Bridging education & industry'},
+    {id:uid(), url:'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1400&auto=format&fit=crop', caption:'Personalized admissions guidance'}
+  ],
+  announcements: [
+    {id:uid(), text:'Welcome to Vision Bridge Consultancy — now assisting students across Chennai & Andhra Pradesh', date: new Date().toISOString().slice(0,10)},
+    {id:uid(), text:'Admissions guidance for engineering programs open — contact us for counselling', date: new Date().toISOString().slice(0,10)}
+  ],
+  colleges: [
+    {id:uid(), name:'Dhanalakshmi College of Engineering', focus:'Engineering', desc:'Known for its engineering programs and research initiatives.'},
+    {id:uid(), name:'Kings Engineering College', focus:'Engineering', desc:'Offers various engineering courses with a focus on practical training.'},
+    {id:uid(), name:'DMI Engineering College', focus:'Engineering', desc:'Emphasizes innovation and entrepreneurship, providing students with industry exposure.'},
+    {id:uid(), name:'RM Engineering College', focus:'Engineering', desc:'Focuses on research and development, with state-of-the-art infrastructure.'},
+    {id:uid(), name:'Aarupadai Veedu Institute of Technology (AVIT)', focus:'Engineering', desc:'Recognized for its strong faculty and industry partnerships.'}
+  ],
+  siteInfo: {
+    phone: '9866745085',
+    phone2: '8330914141',
+    phone3: '9941015004',
+    email: 'info@visionbridge.com',
+    address: 'Chennai Office (exact location on map)',
+    mapCoords: {lat:13.0827, lon:80.2707} // Chennai
+  }
+};
+
+function loadState(){
+  const raw = localStorage.getItem('vb_data_v1');
+  if(!raw){ localStorage.setItem('vb_data_v1', JSON.stringify(defaultData)); return JSON.parse(JSON.stringify(defaultData)); }
+  try{ return JSON.parse(raw); } catch(e){ console.error('Corrupt storage, reset'); localStorage.setItem('vb_data_v1', JSON.stringify(defaultData)); return JSON.parse(JSON.stringify(defaultData)); }
+}
+function saveState(s){ localStorage.setItem('vb_data_v1', JSON.stringify(s)); }
+
+let state = loadState();
+
+// NAV
+const navlinks = $$('.navlink');
+navlinks.forEach(a => a.addEventListener('click', (e)=>{ e.preventDefault(); showPage(a.dataset.target); navlinks.forEach(n=>n.classList.remove('active')); a.classList.add('active'); }));
+function showPage(target){ $$('.page').forEach(p=>p.classList.add('hide')); const sel=document.getElementById(target); if(sel) sel.classList.remove('hide'); window.scrollTo({top:0,behavior:'smooth'}); }
+
+// BANNER
+let bannerIndex = 0;
+function renderBanner(){
+  const b = state.banners && state.banners.length ? state.banners[bannerIndex % state.banners.length] : null;
+  if(b){ $('#banner-img').src = b.url; $('#banner-caption').textContent = b.caption || 'Vision Bridge Consultancy'; }
+  else { $('#banner-img').src=''; $('#banner-caption').textContent='Vision Bridge Consultancy'; }
+}
+setInterval(()=>{ bannerIndex++; renderBanner(); }, 6000);
+
+// ANNOUNCEMENTS
+function renderAnnouncements(){
+  const ul = $('#ann-list'); ul.innerHTML='';
+  (state.announcements || []).slice().sort((a,b)=> (b.date||'').localeCompare(a.date||'')).forEach(a=>{
+    const li=document.createElement('li'); li.className='ann-item';
+    li.innerHTML = `<strong>${escapeHtml(a.text)}</strong><br><small>${a.date||''}</small>`;
+    ul.appendChild(li);
+  });
+  // admin list
+  const adminAnn = $('#admin-ann-list'); adminAnn.innerHTML='';
+  (state.announcements || []).forEach(a=>{
+    const row = document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.gap='8px'; row.style.marginBottom='6px';
+    row.innerHTML = `<div style="flex:1"><strong>${escapeHtml(a.text)}</strong><br><small style="color:${getComputedStyle(document.documentElement).getPropertyValue('--muted')}">${a.date||''}</small></div>`;
+    const controls = document.createElement('div');
+    const eBtn=document.createElement('button'); eBtn.className='btn ghost small'; eBtn.textContent='Edit'; eBtn.onclick=()=>editAnnouncement(a.id);
+    const dBtn=document.createElement('button'); dBtn.className='btn small'; dBtn.textContent='Delete'; dBtn.onclick=()=>{ if(confirm('Delete announcement?')){ state.announcements=state.announcements.filter(x=>x.id!==a.id); saveState(state); renderAll(); } };
+    controls.appendChild(eBtn); controls.appendChild(dBtn); row.appendChild(controls); adminAnn.appendChild(row);
+  });
+}
+
+// COLLEGES
+function renderColleges(){
+  const tbody = $('#colleges-tbody'); tbody.innerHTML='';
+  const tbody2 = $('#colleges-full-tbody'); tbody2.innerHTML='';
+  const adminList = $('#admin-col-list'); adminList.innerHTML='';
+
+  (state.colleges || []).forEach(c=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.focus)}</td><td>${escapeHtml(c.desc)}</td><td><button class="btn small" onclick="viewCollege('${c.id}')">View</button></td>`;
+    tbody.appendChild(tr);
+
+    const tr2 = document.createElement('tr');
+    tr2.innerHTML = `<td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.focus)}</td><td>${escapeHtml(c.desc)}</td><td><button class="btn ghost small" onclick="editCollege('${c.id}')">Edit</button></td>`;
+    tbody2.appendChild(tr2);
+
+    const row = document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.gap='8px'; row.style.marginBottom='6px';
+    row.innerHTML = `<div style="flex:1"><strong>${escapeHtml(c.name)}</strong><br><small>${escapeHtml(c.focus)} • ${escapeHtml(c.desc)}</small></div>`;
+    const controls = document.createElement('div');
+    const eBtn=document.createElement('button'); eBtn.className='btn ghost small'; eBtn.textContent='Edit'; eBtn.onclick=()=>editCollege(c.id);
+    const dBtn=document.createElement('button'); dBtn.className='btn small'; dBtn.textContent='Delete'; dBtn.onclick=()=>{ if(confirm('Delete college?')){ state.colleges=state.colleges.filter(x=>x.id!==c.id); saveState(state); renderAll(); } };
+    controls.appendChild(eBtn); controls.appendChild(dBtn); row.appendChild(controls); adminList.appendChild(row);
+  });
+}
+
+// SITE INFO / MAP
+function renderSiteInfo(){
+  $('#phone').textContent = state.siteInfo?.phone || '';
+  $('#phone2').textContent = state.siteInfo?.phone2 || '';
+  $('#phone3').textContent = state.siteInfo?.phone3 || '';
+  $('#email').textContent = state.siteInfo?.email || '';
+  $('#year').textContent = new Date().getFullYear();
+  $('#about-preview').textContent = 'Vision Bridge Consultancy — 7 years of trusted partnerships in engineering & medical education. We support students, institutions and industry collaboration.';
+  $('#about-full')?.textContent && ($('#about-full').textContent = $('#about-full').textContent); // placeholder if exists
+  const coords = state.siteInfo?.mapCoords || {lat:13.0827, lon:80.2707};
+  const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${coords.lon-0.02}%2C${coords.lat-0.01}%2C${coords.lon+0.02}%2C${coords.lat+0.01}&layer=mapnik&marker=${coords.lat}%2C${coords.lon}`;
+  $('#map-frame').src = mapSrc;
+  $('#map-full').src = mapSrc;
+}
+
+// ADMIN (login)
+const adminPanel = $('#admin-panel');
+const adminOpenBtn = $('#admin-open-btn');
+const adminCloseBtn = $('#admin-close');
+const adminLoginBtn = $('#admin-login-btn');
+const adminLogoutBtn = $('#admin-logout');
+const adminPrefill = $('#prefill');
+
+adminOpenBtn.addEventListener('click', ()=>{ adminPanel.classList.remove('hide'); updateAdminUI(); });
+adminCloseBtn.addEventListener('click', ()=>{ adminPanel.classList.add('hide'); });
+
+adminPrefill.addEventListener('click', ()=>{ $('#admin-username').value=ADMIN_USER; $('#admin-password').value=ADMIN_PASS; });
+
+function isLoggedIn(){ return sessionStorage.getItem('vb_admin_logged') === '1'; }
+function setLoggedIn(val){ if(val) sessionStorage.setItem('vb_admin_logged','1'); else sessionStorage.removeItem('vb_admin_logged'); updateAdminUI(); }
+function updateAdminUI(){
+  if(isLoggedIn()){ $('#admin-login-form').classList.add('hide'); $('#admin-dashboard').classList.remove('hide'); $('#admin-logout').classList.remove('hide'); prefillAdminInputs(); } else { $('#admin-login-form').classList.remove('hide'); $('#admin-dashboard').classList.add('hide'); $('#admin-logout').classList.add('hide'); }
+}
+
+adminLoginBtn.addEventListener('click', ()=>{
+  const u = $('#admin-username').value.trim(); const p = $('#admin-password').value;
+  if(u === ADMIN_USER && p === ADMIN_PASS){ setLoggedIn(true); alert('Admin logged in'); } else alert('Invalid credentials');
+});
+adminLogoutBtn.addEventListener('click', ()=>{ if(confirm('Log out?')) setLoggedIn(false); });
+
+// Admin: banner
+$('#add-banner').addEventListener('click', ()=>{
+  if(!isLoggedIn()){ alert('Admin login required'); return; }
+  const url = $('#banner-url').value.trim(); const caption = $('#banner-caption-input').value.trim();
+  if(!url){ alert('Image URL required'); return; }
+  state.banners.push({id:uid(), url, caption}); saveState(state); renderAll(); $('#banner-url').value=''; $('#banner-caption-input').value='';
+});
+function renderAdminBannerList(){
+  const node = $('#banner-list'); node.innerHTML='';
+  (state.banners || []).forEach(b=>{
+    const div = document.createElement('div'); div.style.display='flex'; div.style.gap='8px'; div.style.alignItems='center'; div.style.marginBottom='6px';
+    div.innerHTML = `<img src="${b.url}" style="width:64px;height:40px;object-fit:cover;border-radius:6px;border:1px solid #e9f3ff"><div style="flex:1"><strong>${escapeHtml(b.caption||'—')}</strong><br><small style="color:${getComputedStyle(document.documentElement).getPropertyValue('--muted')}">${b.url}</small></div>`;
+    const controls = document.createElement('div');
+    const up = document.createElement('button'); up.className='btn ghost small'; up.textContent='Up'; up.onclick=()=>moveBanner(b.id,-1);
+    const down = document.createElement('button'); down.className='btn ghost small'; down.textContent='Down'; down.onclick=()=>moveBanner(b.id,1);
+    const del = document.createElement('button'); del.className='btn small'; del.textContent='Del'; del.onclick=()=>{ if(confirm('Delete banner?')){ state.banners=state.banners.filter(x=>x.id!==b.id); saveState(state); renderAll(); } };
+    controls.appendChild(up); controls.appendChild(down); controls.appendChild(del); div.appendChild(controls); node.appendChild(div);
+  });
+}
+function moveBanner(id, dir){
+  const idx = state.banners.findIndex(x=>x.id===id); if(idx<0) return; const newIdx = idx+dir; if(newIdx<0||newIdx>=state.banners.length) return; const tmp = state.banners[newIdx]; state.banners[newIdx] = state.banners[idx]; state.banners[idx]=tmp; saveState(state); renderAll();
+}
+
+// Admin: ann
+$('#add-ann').addEventListener('click', ()=>{
+  if(!isLoggedIn()){ alert('Admin login required'); return; }
+  const text = $('#ann-text').value.trim(); const date = $('#ann-date').value || new Date().toISOString().slice(0,10);
+  if(!text){ alert('Enter announcement text'); return; }
+  state.announcements.push({id:uid(), text, date}); saveState(state); renderAll(); $('#ann-text').value=''; $('#ann-date').value='';
+});
+$('#clear-anns').addEventListener('click', ()=>{ if(!isLoggedIn()){ alert('Admin login required'); return; } if(confirm('Clear all announcements?')){ state.announcements = []; saveState(state); renderAll(); } });
+function editAnnouncement(id){ if(!isLoggedIn()){ alert('Admin login required'); return; } const a=state.announcements.find(x=>x.id===id); if(!a) return; const nt = prompt('Edit announcement text', a.text); if(nt===null) return; const nd = prompt('Date (YYYY-MM-DD)', a.date||''); a.text = nt; a.date = nd||''; saveState(state); renderAll(); }
+
+// Admin: colleges
+$('#add-college').addEventListener('click', ()=>{
+  if(!isLoggedIn()){ alert('Admin login required'); return; }
+  const name = $('#col-name').value.trim();
+  const focus = $('#col-focus').value.trim();
+  const desc = $('#col-desc').value.trim();
+  if(!name){ alert('College name required'); return; }
+  state.colleges.push({id:uid(), name, focus, desc}); saveState(state); renderAll(); $('#col-name').value=''; $('#col-focus').value=''; $('#col-desc').value='';
+});
+$('#clear-colleges').addEventListener('click', ()=>{ if(!isLoggedIn()){ alert('Admin login required'); return; } if(confirm('Clear all colleges?')){ state.colleges=[]; saveState(state); renderAll(); } });
+function editCollege(id){ if(!isLoggedIn()){ alert('Admin login required'); return; } const c=state.colleges.find(x=>x.id===id); if(!c) return; const name = prompt('College name', c.name); if(name===null) return; const focus = prompt('Focus', c.focus||''); if(focus===null) return; const desc = prompt('Description', c.desc||''); if(desc===null) return; c.name=name; c.focus=focus; c.desc=desc; saveState(state); renderAll(); }
+
+// Admin: site info
+$('#save-site-info').addEventListener('click', ()=>{
+  if(!isLoggedIn()){ alert('Admin login required'); return; }
+  state.siteInfo.phone = $('#site-phone').value.trim();
+  state.siteInfo.phone2 = $('#site-phone2').value.trim();
+  state.siteInfo.phone3 = $('#site-phone3').value.trim();
+  state.siteInfo.email = $('#site-email').value.trim();
+  state.siteInfo.address = $('#site-address').value.trim();
+  saveState(state); renderAll(); alert('Site info saved');
+});
+
+// Helpers / misc
+function renderAdminLists(){
+  renderAdminBannerList();
+  renderAnnouncements();
+  renderColleges();
+}
+function renderAll(){ renderBanner(); renderAnnouncements(); renderColleges(); renderSiteInfo(); renderAdminBannerList(); }
+function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]); }
+
+window.viewCollege = function(id){ const c = state.colleges.find(x=>x.id===id); if(!c) return alert('Not found'); alert(`${c.name}\n${c.focus}\n\n${c.desc}`); };
+
+function prefillAdminInputs(){
+  $('#site-phone').value = state.siteInfo.phone || '';
+  $('#site-phone2').value = state.siteInfo.phone2 || '';
+  $('#site-phone3').value = state.siteInfo.phone3 || '';
+  $('#site-email').value = state.siteInfo.email || '';
+  $('#site-address').value = state.siteInfo.address || '';
+  $('#banner-url').value=''; $('#banner-caption-input').value='';
+  $('#ann-text').value=''; $('#ann-date').value='';
+}
+
+$('#admin-open-btn').addEventListener('click', ()=>{ updateAdminUI(); });
+
+$('#add-college-btn').addEventListener('click', ()=>{
+  if(!isLoggedIn()){ alert('You must be an admin to add a college. Open admin and login.'); return; }
+  showPage('colleges');
+  $('#col-name').focus();
+});
+
+function init(){ renderAll(); updateAdminUI(); showPage('home'); }
+init();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>College Consultancy — Demo</title>
+<style>
+  /* ---------- Basic Reset & Layout ---------- */
+  :root{
+    --accent:#0b74da;
+    --muted:#666;
+    --bg:#f6f8fb;
+    --card:#fff;
+  }
+  *{box-sizing:border-box}
+  body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:#111; line-height:1.4}
+  header{background:linear-gradient(90deg,var(--accent), #084b9b); color:#fff; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px; position:sticky; top:0; z-index:30}
+  header h1{font-size:18px; margin:0}
+  nav{display:flex; gap:8px; align-items:center}
+  nav a{color:rgba(255,255,255,0.95); text-decoration:none; padding:8px 12px; border-radius:8px; font-weight:600}
+  nav a.active, nav a:hover{background:rgba(255,255,255,0.12)}
+  .container{max-width:1100px; margin:22px auto; padding:0 18px}
+
+  /* ---------- Home Sections ---------- */
+  .home-grid{display:grid; grid-template-columns:1fr; gap:18px}
+  @media(min-width:900px){ .home-grid{grid-template-columns:2fr 1fr} }
+
+  /* Banner */
+  .banner{background:var(--card); border-radius:12px; overflow:hidden; box-shadow:0 6px 18px rgba(10,20,40,0.06); position:relative}
+  .banner img{width:100%; height:320px; object-fit:cover; display:block}
+  .banner .banner-caption{position:absolute; left:18px; bottom:18px; color:#fff; text-shadow:0 4px 18px rgba(0,0,0,0.45); background:linear-gradient(90deg, rgba(0,0,0,0.25), rgba(0,0,0,0.18)); padding:8px 12px; border-radius:8px; font-weight:700}
+
+  /* announcement */
+  .announcement-card{background:var(--card); padding:12px; border-radius:12px; box-shadow:0 6px 18px rgba(10,20,40,0.04)}
+  .ann-list{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; max-height:220px; overflow:auto}
+  .ann-item{padding:8px; border-radius:8px; background:linear-gradient(180deg,#fbfdff,#f6f9ff); border:1px solid #eef5ff}
+  .ann-item small{color:var(--muted)}
+
+  /* about preview */
+  .about-card{background:var(--card); padding:16px; border-radius:12px; box-shadow:0 6px 18px rgba(10,20,40,0.04)}
+  .about-card h3{margin-top:0}
+
+  /* contact preview */
+  .contact-card{background:var(--card); padding:12px; border-radius:12px; box-shadow:0 6px 18px rgba(10,20,40,0.04)}
+  .map-preview{width:100%; height:180px; border:0; border-radius:8px; overflow:hidden}
+
+  /* Table (colleges) */
+  .table-card{background:var(--card); padding:12px; border-radius:12px; box-shadow:0 6px 18px rgba(10,20,40,0.04); margin-top:18px; overflow:auto}
+  table{width:100%; border-collapse:collapse; min-width:700px}
+  table th, table td{padding:10px 12px; text-align:left; border-bottom:1px solid #f0f4fb}
+  table th{background:#fbfdff; font-weight:700; color:#123}
+
+  /* Admin button */
+  .btn{display:inline-block; padding:8px 12px; background:var(--accent); color:#fff; border-radius:8px; text-decoration:none; border:none; cursor:pointer; font-weight:700}
+  .btn.ghost{background:transparent; color:var(--accent); border:2px solid rgba(255,255,255,0.15)}
+  .muted{color:var(--muted)}
+
+  /* Admin panel modal/section */
+  .admin-panel{position:fixed; right:18px; bottom:18px; width:360px; max-height:80vh; overflow:auto; background:var(--card); border-radius:12px; padding:12px; box-shadow:0 18px 40px rgba(8,12,30,0.22); z-index:60}
+  .admin-panel h4{margin:4px 0 10px}
+  .field{display:flex; flex-direction:column; gap:6px; margin-bottom:10px}
+  .field input, .field textarea, .field select{padding:8px; border-radius:8px; border:1px solid #e6eefc; font-size:14px}
+  .row{display:flex; gap:8px}
+
+  /* small helpers */
+  .flex{display:flex; gap:12px; align-items:center}
+  .right{margin-left:auto}
+  footer{text-align:center; padding:28px 12px; color:var(--muted)}
+  .hide{display:none}
+  .danger{background:#ffecec; border:1px solid #ffb8b8; padding:10px; border-radius:8px; color:#8a1200}
+
+  /* mobile tweaks */
+  @media(max-width:600px){
+    header{padding:12px}
+    .banner img{height:200px}
+    .admin-panel{width:94%; left:3%; right:3%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex; gap:12px; align-items:center">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24'%3E%3Crect fill='%23fff' opacity='0.06' width='24' height='24' rx='6'/%3E%3Cpath fill='%23fff' d='M12 2L2 7v7c0 5 7 9 10 9s10-4 10-9V7L12 2z'/%3E%3C/svg%3E" alt="logo" style="width:38px;height:38px;border-radius:8px" />
+    <h1>College Consultancy</h1>
+  </div>
+
+  <nav>
+    <a href="#home" class="navlink active" data-target="home">Home</a>
+    <a href="#colleges" class="navlink" data-target="colleges">Colleges</a>
+    <a href="#about" class="navlink" data-target="about">About</a>
+    <a href="#contact" class="navlink" data-target="contact">Contact</a>
+    <button id="admin-open-btn" class="btn">Admin</button>
+  </nav>
+</header>
+
+<main class="container">
+  <!-- HOME -->
+  <section id="home" class="page">
+    <div class="home-grid">
+      <div>
+        <!-- Banner -->
+        <div class="banner" id="banner">
+          <img id="banner-img" src="" alt="banner">
+          <div class="banner-caption" id="banner-caption">Welcome to College Consultancy</div>
+        </div>
+
+        <!-- Announcement -->
+        <div class="announcement-card" style="margin-top:14px">
+          <h3 style="margin:0 0 8px">Announcements</h3>
+          <ul class="ann-list" id="ann-list"></ul>
+          <p class="muted" style="margin-top:10px">Admins can add / edit / remove announcements via Admin panel.</p>
+        </div>
+
+        <!-- Colleges table -->
+        <div class="table-card" id="colleges-table-card">
+          <h3>College Details</h3>
+          <div style="overflow:auto">
+            <table id="colleges-table">
+              <thead>
+                <tr><th>Name</th><th>Location</th><th>Courses</th><th>Seats</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="colleges-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- small about -->
+        <div class="about-card">
+          <h3>About Us (preview)</h3>
+          <p id="about-preview">We help students choose the best colleges based on their goals and profiles. Use the About page for full detail.</p>
+          <a href="#about" class="btn" style="margin-top:8px; display:inline-block">Read More</a>
+        </div>
+
+        <!-- contact preview with map -->
+        <div class="contact-card" style="margin-top:12px">
+          <h3>Contact Us</h3>
+          <p class="muted">Visit our office or drop a message.</p>
+          <iframe class="map-preview" id="map-frame" src="" loading="lazy"></iframe>
+          <p style="margin-top:8px">Phone: <strong id="phone">+91 12345 67890</strong></p>
+          <p>Email: <strong id="email">info@consultancy.example</strong></p>
+          <a href="#contact" class="btn" style="margin-top:8px; display:inline-block">Full Contact</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Colleges "page" (same file) -->
+  <section id="colleges" class="page hide" style="margin-top:18px">
+    <div class="table-card">
+      <div style="display:flex;align-items:center">
+        <h2 style="margin:0">All Colleges</h2>
+        <button id="add-college-btn" class="btn right">Add College</button>
+      </div>
+      <p class="muted">Use admin panel or the Add button (admin must be logged in) to manage records.</p>
+      <table style="margin-top:12px">
+        <thead><tr><th>Name</th><th>Location</th><th>Courses</th><th>Seats</th><th>Actions</th></tr></thead>
+        <tbody id="colleges-full-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="page hide" style="margin-top:18px">
+    <div class="about-card">
+      <h2>About Us</h2>
+      <p id="about-full">College Consultancy is dedicated to helping students navigate the complex process of selecting tertiary institutions. We provide personalized consultations, college comparisons, scholarship guidance and application assistance. Our team consists of experienced education counselors, former admission officers and academic advisors.</p>
+      <h4>Our Mission</h4>
+      <p>To empower students with transparent, data-driven guidance so they can select colleges that match their academic strengths, career goals and budgets.</p>
+      <h4>What we offer</h4>
+      <ul>
+        <li>Personal profile evaluation</li>
+        <li>College shortlisting</li>
+        <li>Application & essay support</li>
+        <li>Scholarship & financial aid guidance</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="page hide" style="margin-top:18px">
+    <div class="contact-card">
+      <h2>Contact Us</h2>
+      <p>Office Hours: Mon-Fri 9:30am - 6:30pm</p>
+      <p>Address: <span id="address-display">123, Education Lane, City</span></p>
+      <p>Phone: <strong id="phone-full">+91 12345 67890</strong></p>
+      <p>Email: <strong id="email-full">info@consultancy.example</strong></p>
+      <iframe id="map-full" src="" style="width:100%; height:360px; border:0; border-radius:8px; margin-top:12px;"></iframe>
+    </div>
+  </section>
+
+</main>
+
+<!-- Admin Panel (hidden by default; appears as floating box) -->
+<div id="admin-panel" class="admin-panel hide" aria-hidden="true">
+  <div style="display:flex; gap:10px; align-items:center">
+    <h4>Admin</h4>
+    <button id="admin-logout" class="btn right hide">Logout</button>
+    <button id="admin-close" class="btn ghost">Close</button>
+  </div>
+
+  <!-- Login form -->
+  <div id="admin-login-form">
+    <p class="muted">Enter admin credentials to manage site content.</p>
+    <div class="field"><label>Username</label><input id="admin-username" placeholder="username"></div>
+    <div class="field"><label>Password</label><input type="password" id="admin-password" placeholder="password"></div>
+    <div style="display:flex; gap:8px">
+      <button id="admin-login-btn" class="btn">Login</button>
+      <button id="prefill" class="btn ghost">Prefill creds</button>
+    </div>
+    <p class="muted" style="margin-top:10px">Note: This demo uses client-side auth. For production use server-side auth & secure storage.</p>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="admin-dashboard" class="hide">
+    <h4>Manage Content</h4>
+
+    <!-- Banner images -->
+    <div style="border-top:1px dashed #eef6ff; padding-top:10px; margin-top:8px">
+      <strong>Banner Images</strong>
+      <div class="field">
+        <label>Image URL</label>
+        <input id="banner-url" placeholder="https://...jpg or png">
+      </div>
+      <div class="field row">
+        <input id="banner-caption-input" placeholder="Caption (optional)">
+        <button id="add-banner" class="btn">Add</button>
+      </div>
+      <div id="banner-list" style="margin-top:8px"></div>
+    </div>
+
+    <!-- Announcements -->
+    <div style="border-top:1px dashed #eef6ff; padding-top:10px; margin-top:8px">
+      <strong>Announcements</strong>
+      <div class="field">
+        <input id="ann-text" placeholder="Announcement text">
+        <input id="ann-date" type="date" style="width:200px">
+      </div>
+      <div class="row">
+        <button id="add-ann" class="btn">Add Announcement</button>
+        <button id="clear-anns" class="btn ghost">Clear All</button>
+      </div>
+      <div id="admin-ann-list" style="margin-top:8px"></div>
+    </div>
+
+    <!-- Colleges -->
+    <div style="border-top:1px dashed #eef6ff; padding-top:10px; margin-top:8px">
+      <strong>Colleges</strong>
+      <div class="field"><input id="col-name" placeholder="College name"></div>
+      <div class="field"><input id="col-loc" placeholder="Location"></div>
+      <div class="field"><input id="col-courses" placeholder="Courses (comma separated)"></div>
+      <div class="field"><input id="col-seats" placeholder="Seats (number)"></div>
+      <div class="row">
+        <button id="add-college" class="btn">Add College</button>
+        <button id="clear-colleges" class="btn ghost">Clear All</button>
+      </div>
+      <div id="admin-col-list" style="margin-top:8px"></div>
+    </div>
+
+    <!-- Site info -->
+    <div style="border-top:1px dashed #eef6ff; padding-top:10px; margin-top:8px">
+      <strong>Site Info</strong>
+      <div class="field"><input id="site-phone" placeholder="Phone"></div>
+      <div class="field"><input id="site-email" placeholder="Email"></div>
+      <div class="field"><input id="site-address" placeholder="Address"></div>
+      <div class="row"><button id="save-site-info" class="btn">Save</button></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © <span id="year"></span> College Consultancy — demo single-file site
+</footer>
+
+<script>
+/* =========================
+   Single-file site script
+   - LocalStorage-backed CMS
+   - Admin login: raja@1114 / 2115@Raja
+   ========================= */
+
+const ADMIN_USER = 'raja@1114';
+const ADMIN_PASS = '2115@Raja';
+
+// ---------- Utilities ----------
+const $ = (s, root=document) => root.querySelector(s);
+const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
+const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+// ---------- Default seed data ----------
+const defaultData = {
+  banners: [
+    {id:uid(), url:'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=9c6a2b2e7e9b381c2b6a3d0bc6e6a1b9', caption:'Start your journey with the right college'},
+    {id:uid(), url:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=0599061f6ff9ec2a8c3d9a03c2c8c3c0', caption:'Personal guidance, tailored plans'}
+  ],
+  announcements: [
+    {id:uid(), text:'Application deadline for XYZ University extended to May 30, 2025', date: '2025-05-10'},
+    {id:uid(), text:'Scholarship workshop on June 10 - register now', date: '2025-06-01'}
+  ],
+  colleges: [
+    {id:uid(), name:'National Institute of Technology', location:'City A', courses:'Engineering,CS,Math', seats:120},
+    {id:uid(), name:'City Arts & Science College', location:'City B', courses:'Arts,Commerce,Science', seats:80}
+  ],
+  siteInfo: {
+    phone: '+91 12345 67890',
+    email: 'info@consultancy.example',
+    address: '123, Education Lane, City',
+    mapCoords: {lat:35.6895, lon:139.6917} // Tokyo example coords
+  }
+};
+
+// ---------- Storage helpers ----------
+function loadState(){
+  const raw = localStorage.getItem('cc_data_v1');
+  if(!raw) {
+    localStorage.setItem('cc_data_v1', JSON.stringify(defaultData));
+    return JSON.parse(JSON.stringify(defaultData));
+  }
+  try{
+    return JSON.parse(raw);
+  }catch(e){
+    console.error('Corrupt storage, resetting', e);
+    localStorage.setItem('cc_data_v1', JSON.stringify(defaultData));
+    return JSON.parse(JSON.stringify(defaultData));
+  }
+}
+function saveState(state){
+  localStorage.setItem('cc_data_v1', JSON.stringify(state));
+}
+let state = loadState();
+
+// ---------- UI: Navigation ----------
+const navlinks = $$('.navlink');
+navlinks.forEach(a => {
+  a.addEventListener('click', (e)=>{
+    e.preventDefault();
+    showPage(a.dataset.target);
+    navlinks.forEach(n=>n.classList.remove('active'));
+    a.classList.add('active');
+  });
+});
+function showPage(target){
+  $$('.page').forEach(p=>p.classList.add('hide'));
+  const sel = document.getElementById(target);
+  if(sel) sel.classList.remove('hide');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ---------- Banner slider ----------
+let bannerIndex = 0;
+function renderBanner(){
+  const banners = state.banners || [];
+  if(banners.length === 0){
+    $('#banner-img').src = '';
+    $('#banner-caption').textContent = '';
+    return;
+  }
+  bannerIndex = bannerIndex % banners.length;
+  const b = banners[bannerIndex];
+  $('#banner-img').src = b.url;
+  $('#banner-caption').textContent = b.caption || '';
+}
+function nextBanner(){
+  bannerIndex++;
+  renderBanner();
+}
+setInterval(nextBanner, 6000); // rotate every 6s
+
+// ---------- Announcements ----------
+function renderAnnouncements(){
+  const ul = $('#ann-list'); ul.innerHTML = '';
+  (state.announcements || []).slice().sort((a,b)=> (b.date||'').localeCompare(a.date||'')).forEach(a=>{
+    const li = document.createElement('li'); li.className='ann-item';
+    li.innerHTML = `<strong>${a.text}</strong><br><small>${a.date||''}</small>`;
+    ul.appendChild(li);
+  });
+
+  // admin list
+  const adminAnn = $('#admin-ann-list'); adminAnn.innerHTML='';
+  (state.announcements||[]).forEach(a=>{
+    const row = document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.gap='8px'; row.style.marginBottom='6px';
+    row.innerHTML = `<div style="flex:1"><strong>${a.text}</strong><br><small>${a.date||''}</small></div>`;
+    const controls = document.createElement('div');
+    const eBtn = document.createElement('button'); eBtn.className='btn ghost'; eBtn.textContent='Edit'; eBtn.onclick=()=>editAnnouncement(a.id);
+    const dBtn = document.createElement('button'); dBtn.className='btn'; dBtn.textContent='Delete'; dBtn.onclick=()=>{ if(confirm('Delete announcement?')) { state.announcements = state.announcements.filter(x=>x.id!==a.id); saveState(state); renderAll(); } };
+    controls.appendChild(eBtn); controls.appendChild(dBtn);
+    row.appendChild(controls);
+    adminAnn.appendChild(row);
+  });
+}
+
+// ---------- Colleges ----------
+function renderColleges(){
+  const tbody = $('#colleges-tbody'); tbody.innerHTML = '';
+  const tbody2 = $('#colleges-full-tbody'); tbody2.innerHTML = '';
+  const adminList = $('#admin-col-list'); adminList.innerHTML = '';
+
+  (state.colleges || []).forEach(c=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.location)}</td><td>${escapeHtml(c.courses)}</td><td>${c.seats||''}</td><td><button class="btn ghost" onclick="viewCollege('${c.id}')">View</button></td>`;
+    tbody.appendChild(tr);
+
+    const tr2 = tr.cloneNode(true);
+    tr2.querySelector('button').textContent='Edit';
+    tr2.querySelector('button').onclick = ()=>editCollege(c.id);
+    tbody2.appendChild(tr2);
+
+    // admin row
+    const row = document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.gap='8px'; row.style.marginBottom='6px';
+    row.innerHTML = `<div style="flex:1"><strong>${c.name}</strong><br><small>${c.location} • ${c.courses}</small></div>`;
+    const controls = document.createElement('div');
+    const eBtn = document.createElement('button'); eBtn.className='btn ghost'; eBtn.textContent='Edit'; eBtn.onclick=()=>editCollege(c.id);
+    const dBtn = document.createElement('button'); dBtn.className='btn'; dBtn.textContent='Delete'; dBtn.onclick=()=>{ if(confirm('Delete college?')) { state.colleges = state.colleges.filter(x=>x.id!==c.id); saveState(state); renderAll(); } };
+    controls.appendChild(eBtn); controls.appendChild(dBtn);
+    row.appendChild(controls);
+    adminList.appendChild(row);
+  });
+}
+
+// ---------- Site Info (phone/email/address/map) ----------
+function renderSiteInfo(){
+  $('#phone').textContent = state.siteInfo?.phone || '';
+  $('#email').textContent = state.siteInfo?.email || '';
+  $('#phone-full').textContent = state.siteInfo?.phone || '';
+  $('#email-full').textContent = state.siteInfo?.email || '';
+  $('#address-display').textContent = state.siteInfo?.address || '';
+  // Use OpenStreetMap embed for map (no API key)
+  const coords = state.siteInfo?.mapCoords || {lat:35.6895, lon:139.6917};
+  const mapPreviewSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${coords.lon-0.02}%2C${coords.lat-0.01}%2C${coords.lon+0.02}%2C${coords.lat+0.01}&layer=mapnik&marker=${coords.lat}%2C${coords.lon}`;
+  $('#map-frame').src = mapPreviewSrc;
+  $('#map-full').src = mapPreviewSrc;
+}
+
+// ---------- Admin: login/logout ----------
+const adminPanel = $('#admin-panel');
+const adminOpenBtn = $('#admin-open-btn');
+const adminCloseBtn = $('#admin-close');
+const adminLoginBtn = $('#admin-login-btn');
+const adminLogoutBtn = $('#admin-logout');
+const adminPrefill = $('#prefill');
+
+adminOpenBtn.addEventListener('click', ()=>{ adminPanel.classList.remove('hide'); });
+adminCloseBtn.addEventListener('click', ()=>{ adminPanel.classList.add('hide'); });
+adminPrefill.addEventListener('click', ()=>{ $('#admin-username').value=ADMIN_USER; $('#admin-password').value=ADMIN_PASS; });
+
+function isLoggedIn(){ return sessionStorage.getItem('cc_admin_logged') === '1'; }
+function setLoggedIn(val){
+  if(val){ sessionStorage.setItem('cc_admin_logged','1'); } else { sessionStorage.removeItem('cc_admin_logged'); }
+  updateAdminUI();
+}
+
+function updateAdminUI(){
+  if(isLoggedIn()){
+    $('#admin-login-form').classList.add('hide');
+    $('#admin-dashboard').classList.remove('hide');
+    $('#admin-logout').classList.remove('hide');
+    $('#admin-login-btn').disabled=false;
+    prefillAdminInputs();
+  } else {
+    $('#admin-login-form').classList.remove('hide');
+    $('#admin-dashboard').classList.add('hide');
+    $('#admin-logout').classList.add('hide');
+  }
+}
+
+adminLoginBtn.addEventListener('click', ()=>{
+  const u = $('#admin-username').value.trim();
+  const p = $('#admin-password').value;
+  if(u===ADMIN_USER && p===ADMIN_PASS){
+    setLoggedIn(true);
+    alert('Admin logged in');
+  } else {
+    alert('Invalid credentials');
+  }
+});
+
+adminLogoutBtn.addEventListener('click', ()=>{
+  if(confirm('Log out?')){ setLoggedIn(false); }
+});
+
+// ---------- Admin actions: banner ----------
+$('#add-banner').addEventListener('click', ()=>{
+  const url = $('#banner-url').value.trim();
+  const caption = $('#banner-caption-input').value.trim();
+  if(!url){ alert('Image URL required'); return; }
+  state.banners.push({id:uid(), url, caption});
+  saveState(state); renderAll();
+  $('#banner-url').value=''; $('#banner-caption-input').value='';
+});
+function renderAdminBannerList(){
+  const node = $('#banner-list'); node.innerHTML='';
+  state.banners.forEach(b=>{
+    const div = document.createElement('div'); div.style.display='flex'; div.style.gap='8px'; div.style.alignItems='center'; div.style.marginBottom='6px';
+    div.innerHTML = `<img src="${b.url}" style="width:64px;height:40px;object-fit:cover;border-radius:6px;border:1px solid #e9f3ff"><div style="flex:1"><strong>${b.caption||'—'}</strong><br><small style="color:#666">${b.url}</small></div>`;
+    const controls = document.createElement('div');
+    const up = document.createElement('button'); up.className='btn ghost'; up.textContent='Up'; up.onclick=()=>moveBanner(b.id,-1);
+    const down = document.createElement('button'); down.className='btn ghost'; down.textContent='Down'; down.onclick=()=>moveBanner(b.id,1);
+    const del = document.createElement('button'); del.className='btn'; del.textContent='Del'; del.onclick=()=>{ if(confirm('Delete banner?')) { state.banners = state.banners.filter(x=>x.id!==b.id); saveState(state); renderAll(); } };
+    controls.appendChild(up); controls.appendChild(down); controls.appendChild(del);
+    div.appendChild(controls);
+    node.appendChild(div);
+  });
+}
+function moveBanner(id, dir){
+  const idx = state.banners.findIndex(x=>x.id===id); if(idx<0) return;
+  const newIdx = idx + dir; if(newIdx<0 || newIdx>=state.banners.length) return;
+  const tmp = state.banners[newIdx]; state.banners[newIdx] = state.banners[idx]; state.banners[idx]=tmp;
+  saveState(state); renderAll();
+}
+
+// ---------- Admin: announcements ----------
+$('#add-ann').addEventListener('click', ()=>{
+  const text = $('#ann-text').value.trim();
+  const date = $('#ann-date').value || new Date().toISOString().slice(0,10);
+  if(!text){ alert('Enter announcement text'); return; }
+  state.announcements.push({id:uid(), text, date});
+  saveState(state); renderAll();
+  $('#ann-text').value=''; $('#ann-date').value='';
+});
+$('#clear-anns').addEventListener('click', ()=>{
+  if(confirm('Clear all announcements?')){ state.announcements = []; saveState(state); renderAll(); }
+});
+function editAnnouncement(id){
+  const a = state.announcements.find(x=>x.id===id); if(!a) return;
+  const newText = prompt('Edit announcement text', a.text);
+  if(newText===null) return;
+  const newDate = prompt('Date (YYYY-MM-DD)', a.date || '');
+  a.text = newText; a.date = newDate || '';
+  saveState(state); renderAll();
+}
+
+// ---------- Admin: colleges ----------
+$('#add-college').addEventListener('click', ()=>{
+  if(!isLoggedIn()){ alert('Admin login required'); return; }
+  const name = $('#col-name').value.trim();
+  const loc = $('#col-loc').value.trim();
+  const courses = $('#col-courses').value.trim();
+  const seats = parseInt($('#col-seats').value) || 0;
+  if(!name){ alert('College name required'); return; }
+  state.colleges.push({id:uid(), name, location:loc, courses, seats});
+  saveState(state); renderAll();
+  $('#col-name').value=''; $('#col-loc').value=''; $('#col-courses').value=''; $('#col-seats').value='';
+});
+$('#clear-colleges').addEventListener('click', ()=>{
+  if(confirm('Clear all colleges?')){ state.colleges = []; saveState(state); renderAll(); }
+});
+function editCollege(id){
+  if(!isLoggedIn()){ alert('Admin login required'); return; }
+  const c = state.colleges.find(x=>x.id===id); if(!c) return;
+  const name = prompt('College name', c.name); if(name===null) return;
+  const loc = prompt('Location', c.location); if(loc===null) return;
+  const courses = prompt('Courses (comma separated)', c.courses); if(courses===null) return;
+  const seatsStr = prompt('Seats (number)', c.seats||''); if(seatsStr===null) return;
+  c.name=name; c.location=loc; c.courses=courses; c.seats = parseInt(seatsStr)||0;
+  saveState(state); renderAll();
+}
+
+// ---------- Admin: site info ----------
+$('#save-site-info').addEventListener('click', ()=>{
+  if(!isLoggedIn()){ alert('Admin login required'); return; }
+  state.siteInfo.phone = $('#site-phone').value.trim();
+  state.siteInfo.email = $('#site-email').value.trim();
+  state.siteInfo.address = $('#site-address').value.trim();
+  saveState(state); renderAll();
+  alert('Site info saved');
+});
+
+// ---------- helpers ----------
+function renderAll(){
+  renderBanner();
+  renderAnnouncements();
+  renderColleges();
+  renderSiteInfo();
+  renderAdminBannerList();
+  $('#year').textContent = new Date().getFullYear();
+}
+function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]); }
+
+// ---------- small page actions ----------
+window.viewCollege = function(id){
+  const c = state.colleges.find(x=>x.id===id);
+  if(!c) return alert('Not found');
+  alert(`${c.name}\nLocation: ${c.location}\nCourses: ${c.courses}\nSeats: ${c.seats}`);
+};
+
+function prefillAdminInputs(){
+  $('#site-phone').value = state.siteInfo.phone || '';
+  $('#site-email').value = state.siteInfo.email || '';
+  $('#site-address').value = state.siteInfo.address || '';
+  $('#banner-url').value=''; $('#banner-caption-input').value='';
+  $('#ann-text').value=''; $('#ann-date').value='';
+}
+
+document.getElementById('admin-open-btn').addEventListener('click', ()=>{ updateAdminUI(); });
+
+// handle adding college button from colleges page (requires admin)
+$('#add-college-btn').addEventListener('click', ()=>{
+  if(!isLoggedIn()){ alert('You must be an admin to add a college. Open admin and login.'); return; }
+  showPage('colleges');
+  $('#col-name').focus();
+});
+
+// small edit flows
+function editAnnouncementInline(id){ editAnnouncement(id); }
+function editCollegeInline(id){ editCollege(id); }
+
+// init
+renderAll();
+updateAdminUI();
+showPage('home');
+</script>
+</body>
+</html>
