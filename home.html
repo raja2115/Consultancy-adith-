@@ -1,377 +1,858 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>College Consultancy — Refined Demo</title>
-<style>
-  /* ---------- Theme & Reset ---------- */
-  :root{
-    --accent:#0066ff;
-    --accent-2:#0b74da;
-    --muted:#6b7280;
-    --bg:#f4f7fb;
-    --card:#ffffff;
-    --glass: rgba(255,255,255,0.7);
-    --soft-shadow: 0 10px 30px rgba(8,15,40,0.06);
-    --glass-border: rgba(10,30,80,0.06);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:linear-gradient(180deg,var(--bg), #eef4ff); color:#0f1724; line-height:1.45; -webkit-font-smoothing:antialiased}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision Consultancy</title>
+  <link rel="icon" type="image/jpeg" href="project image/logo.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      min-height: 100vh;
+      background: transparent;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      position: relative;
+      overflow-x: hidden;
+    }
+    #animated-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0; pointer-events: none;
+    }
+    
+    /* NAVBAR - Perfect alignment for all devices */
+    nav {
+      background-color: rgba(51,51,51,0.97);
+      color: white;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      animation: slideDown 1s ease-in-out;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      min-height: 70px;
+    }
+    @keyframes slideDown { 
+      from { transform: translateY(-100%); } 
+      to { transform: translateY(0); } 
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .logo-container img {
+      height: 50px;
+      width: auto;
+      display: block;
+    }
+    
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      flex: 1;
+      gap: 20px;
+    }
+    nav ul li {
+      margin: 0;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.05em;
+      transition: color 0.3s;
+      padding: 8px 12px;
+      display: block;
+      white-space: nowrap;
+    }
+    nav ul li a:hover {
+      color: #ffcc00;
+    }
+    
+    .section {
+      padding: 22px;
+      margin-top: 90px;
+      position: relative;
+      z-index: 1;
+    }
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 880px;
+      height: 340px;
+      margin: 0 auto 24px auto;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px #0001;
+      background: rgba(255,255,255,0.14);
+    }
+    .carousel img {
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.1s;
+      z-index: 1;
+      border-radius: 20px;
+    }
+    .carousel img.active {
+      opacity: 1;
+      z-index: 2;
+    }
+    .carousel button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.55);
+      color: white;
+      border: none;
+      padding: 13px;
+      cursor: pointer;
+      border-radius: 50%;
+      font-size: 22px;
+      z-index: 3;
+      transition: background 0.24s;
+      box-shadow: 0 2px 14px #2893d688;
+    }
+    .carousel button:hover {
+      background-color: #ffcc00;
+      color: #333;
+    }
+    .prev { left: 16px; }
+    .next { right: 16px; }
+    
+    marquee {
+      background: linear-gradient(90deg,#ffe066 60%,#aeefff 150%);
+      color: #333;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1.17em;
+      border-radius: 13px;
+      margin: 18px auto 14px auto;
+      max-width: 700px;
+      box-shadow: 0 1px 9px #fbecc033;
+    }
+    .about-us, .contact-us-home {
+      text-align: center;
+      margin: 36px 0 25px 0;
+    }
+    .about-us h2, .contact-us-home h2 {
+      color: #2893d6;
+      font-size: 2em;
+      letter-spacing: 1.3px;
+      margin-bottom: 8px;
+      animation: fadeInUp 1s;
+    }
+    .about-us p {
+      color: #223d59;
+      font-size: 1.13em;
+      background: rgba(255,255,255,0.42);
+      padding: 13px 16px;
+      display:inline-block;
+      border-radius:14px;
+      box-shadow:0 2px 9px #e9f7ff25;
+      animation: fadeInUp 1.2s;
+      margin-bottom: 24px;
+    }
+    .feature-cards-row {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 17px;
+    }
+    .feature-card {
+      background: rgba(255,255,255,0.93);
+      border-radius: 18px;
+      box-shadow: 0 2px 14px #9ee8ff22;
+      border: 2px solid #dbecff88;
+      padding: 22px 18px 13px 18px;
+      min-width:180px;
+      max-width:310px;
+      width:100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: box-shadow 0.29s, border 0.24s, transform 0.19s;
+      position: relative;
+      margin-bottom: 13px;
+      animation: fadeInUp 1.15s;
+    }
+    .feature-card:hover {
+      box-shadow:0 23px 50px #74d4ff60;
+      border-color: #1eb6ff;
+      transform:scale(1.07) translateY(-9px);
+    }
+    .feature-card .card-icon {
+      font-size: 1.7em;
+      margin-bottom: 11px;
+      color: #1eb6ff;
+      background: #eafdff;
+      border-radius: 50%;
+      padding: 6px;
+      box-shadow:0 2px 8px #afefff55;
+    }
+    .feature-card .feat-title {
+      font-size: 1.10em;
+      font-weight: bold;
+      color: #0455a0;
+      margin-bottom: 8px;
+      margin-top: 2px;
+      letter-spacing: 0.6px;
+    }
+    .feature-list {
+      margin: 0;
+      padding-left: 16px;
+      color: #225178;
+      font-size: 1em;
+      line-height: 2em;
+      letter-spacing: 0.01em;
+    }
+    .contact-row {
+      margin: 34px 0 0 0;
+      display: flex;
+      gap: 19px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .contact-btn {
+      padding: 12px 20px;
+      background: linear-gradient(90deg,#25d366 76%,#13cde9 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 9px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      transition: background 0.22s, transform 0.17s;
+      font-size: 1.10em;
+      box-shadow: 0 6px 14px #aef6b833;
+      border: none;
+      letter-spacing: 0.5px;
+      animation: fadeInUp 1.2s;
+    }
+    .contact-btn img {
+      width: 22px;
+      margin-right:10px;
+      vertical-align:middle;
+    }
+    .contact-btn:hover {
+      background: linear-gradient(90deg,#13cde9 48%,#25d366 100%);
+      transform:scale(1.09);
+    }
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+    .social-icons a {
+      margin: 0 15px;
+      font-size: 34px;
+      color: #2893d6;
+      transition: color 0.29s, transform 0.22s;
+      background: rgba(255,255,255,0.63);
+      border-radius: 9px;
+      padding: 10px;
+      box-shadow:0 2px 8px #9ee8ff38;
+      animation: fadeInUp 1.3s;
+    }
+    .social-icons a:hover {
+      color: #ffcc00;
+      background: #fff4da;
+      transform: scale(1.2) rotate(-3deg);
+    }
+    .testimonial-box {
+      max-width: 700px;
+      margin: 38px auto 0 auto;
+      text-align: left;
+      background: rgba(255,255,255,0.78);
+      border-radius:18px;
+      box-shadow:0 3px 16px #5093e822;
+      padding: 22px 23px;
+      font-size: 1.1em;
+      color:#225188;
+      font-style:italic;
+      border-left: 6px solid #25d366;
+      position:relative;
+      animation: fadeInUp 1.15s;
+    }
+    .testimonial-box:before {
+      content: """;
+      font-size: 2.1em;
+      color:#1eb6ff;
+      position: absolute;
+      left:15px;
+      top:8px;
+      font-family: serif;
+    }
+    .testimonial-author {
+      margin-top: 14px;
+      text-align:right;
+      color:#1eb6ff;
+      font-weight:bold;
+    }
+    @keyframes fadeInUp {
+      0% {opacity:0; transform: translateY(35px);}
+      100%{opacity:1; transform: none;}
+    }
 
-  /* ---------- Header ---------- */
-  header{backdrop-filter: blur(6px); background:linear-gradient(90deg,var(--accent), #084b9b); color:#fff; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px; position:sticky; top:0; z-index:40; box-shadow:0 6px 20px rgba(2,6,23,0.08)}
-  header h1{font-size:18px; margin:0; letter-spacing:0.2px}
-  nav{display:flex; gap:8px; align-items:center}
-  nav a{color:rgba(255,255,255,0.95); text-decoration:none; padding:8px 12px; border-radius:10px; font-weight:700; font-size:14px}
-  nav a.active, nav a:hover{background:rgba(255,255,255,0.12)}
+    /* =============== RESPONSIVE MEDIA QUERIES =============== */
 
-  /* ---------- Layout ---------- */
-  .container{max-width:1100px; margin:28px auto; padding:0 18px}
-  .home-grid{display:grid; grid-template-columns:1fr; gap:18px}
-  @media(min-width:960px){ .home-grid{grid-template-columns:2fr 1fr} }
+    /* Large Desktop - 1440px and above */
+    @media screen and (min-width: 1440px) {
+      nav {
+        padding: 12px 60px;
+      }
+      nav ul {
+        gap: 35px;
+      }
+      .section {
+        padding: 30px 40px;
+      }
+    }
 
-  /* ---------- Banner ---------- */
-  .banner{background:var(--card); border-radius:14px; overflow:hidden; box-shadow:var(--soft-shadow); position:relative; transform:translateZ(0)}
-  .banner img{width:100%; height:360px; object-fit:cover; display:block; transition:transform 1.3s cubic-bezier(.2,.9,.2,1)}
-  .banner:hover img{transform:scale(1.03)}
-  .banner .banner-caption{position:absolute; left:20px; bottom:20px; color:#fff; text-shadow:0 6px 22px rgba(2,6,20,0.5); padding:10px 14px; border-radius:12px; font-weight:800; backdrop-filter: blur(6px); background:linear-gradient(90deg, rgba(0,0,0,0.28), rgba(0,0,0,0.18));}
-  .banner .banner-sub{position:absolute; right:20px; top:20px; color:#fff; font-weight:600; padding:8px 12px; border-radius:10px; background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));}
+    /* Desktop - 1200px to 1440px */
+    @media screen and (min-width: 1200px) and (max-width: 1439px) {
+      nav {
+        padding: 10px 40px;
+      }
+      nav ul {
+        gap: 25px;
+      }
+    }
 
-  /* ---------- Cards ---------- */
-  .card{background:var(--card); padding:16px; border-radius:12px; box-shadow:var(--soft-shadow); transition:transform .28s ease, box-shadow .28s ease}
-  .card:hover{transform:translateY(-6px)}
-  .about-card h3{margin-top:0}
+    /* Laptop - 1024px to 1199px */
+    @media screen and (min-width: 1024px) and (max-width: 1199px) {
+      nav {
+        padding: 10px 30px;
+      }
+      nav ul {
+        gap: 20px;
+      }
+      nav ul li a {
+        font-size: 1em;
+      }
+    }
 
-  /* ---------- Table ---------- */
-  .table-card{margin-top:12px}
-  table{width:100%; border-collapse:collapse; min-width:700px; border-radius:8px; overflow:hidden}
-  table th, table td{padding:12px 14px; text-align:left; border-bottom:1px solid #f0f4fb}
-  table th{background:linear-gradient(180deg,#fbfdff,#f6f9ff); font-weight:700; color:#123}
-  tbody tr{transition:background .18s ease, transform .18s ease}
-  tbody tr:hover{background:linear-gradient(90deg, rgba(10,90,240,0.02), rgba(10,90,240,0.01)); transform:translateY(-2px)}
-  .action-btn{padding:6px 10px; border-radius:8px; border:0; cursor:pointer; font-weight:700}
-  .view-btn{background:transparent; color:var(--accent-2); border:2px solid rgba(11,116,218,0.12)}
+    /* Tablet Landscape & Small Laptop - 768px to 1023px */
+    @media screen and (max-width: 1023px) {
+      nav {
+        padding: 10px 20px;
+      }
+      nav ul {
+        gap: 15px;
+      }
+      nav ul li a {
+        font-size: 0.95em;
+        padding: 6px 10px;
+      }
+      .logo-container img {
+        height: 45px;
+      }
+    }
 
-  /* ---------- Modal ---------- */
-  .modal-backdrop{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(4,8,20,0.45); z-index:80; opacity:0; pointer-events:none; transition:opacity .22s ease}
-  .modal-backdrop.show{opacity:1; pointer-events:auto}
-  .modal{width:min(720px,95%); background:linear-gradient(180deg,#fff, #fbfdff); border-radius:14px; padding:18px; box-shadow:0 30px 80px rgba(2,6,30,0.5); transform:translateY(12px) scale(.98); transition:transform .28s cubic-bezier(.2,.9,.2,1), opacity .22s ease; opacity:0}
-  .modal-backdrop.show .modal{transform:translateY(0) scale(1); opacity:1}
-  .modal h3{margin:0 0 8px}
-  .modal .meta{color:var(--muted); font-size:14px}
-  .close-x{background:transparent; border:0; font-weight:800; font-size:16px; padding:6px; border-radius:8px}
+    /* Tablet Portrait - 768px to 950px */
+    @media screen and (max-width: 950px) {
+      nav {
+        flex-direction: column;
+        padding: 12px 15px;
+        min-height: auto;
+        gap: 12px;
+      }
+      .logo-container {
+        width: 100%;
+        justify-content: center;
+      }
+      .logo-container img {
+        height: 42px;
+      }
+      nav ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        gap: 8px;
+      }
+      nav ul li a {
+        font-size: 0.9em;
+        padding: 6px 10px;
+      }
+      .carousel {
+        height: 210px;
+        max-width: 98vw;
+      }
+      .about-us h2, .contact-us-home h2 {
+        font-size: 1.5em;
+      }
+      .feature-cards-row {
+        flex-direction: column;
+        align-items: center;
+      }
+      .feature-card {
+        max-width: 96vw;
+      }
+      .section {
+        margin-top: 130px;
+      }
+    }
 
-  /* ---------- Small panels ---------- */
-  .muted{color:var(--muted)}
-  .right{margin-left:auto}
-  footer{text-align:center; padding:28px 12px; color:var(--muted)}
-  .hide{display:none}
+    /* Small Tablets and Large Phones - 600px to 768px */
+    @media screen and (max-width: 768px) {
+      nav {
+        padding: 10px 12px;
+        gap: 10px;
+      }
+      .logo-container img {
+        height: 38px;
+      }
+      nav ul {
+        gap: 6px;
+      }
+      nav ul li a {
+        font-size: 0.85em;
+        padding: 5px 8px;
+      }
+      .section {
+        padding: 15px 8px;
+        margin-top: 140px;
+      }
+      .carousel {
+        height: 180px;
+        border-radius: 12px;
+      }
+      .carousel button {
+        padding: 10px;
+        font-size: 18px;
+      }
+      marquee {
+        font-size: 1em;
+        padding: 8px;
+      }
+      .about-us h2, .contact-us-home h2 {
+        font-size: 1.4em;
+      }
+      .feature-card {
+        padding: 18px 15px;
+      }
+      .contact-btn {
+        font-size: 1em;
+        padding: 10px 16px;
+      }
+      .social-icons a {
+        font-size: 28px;
+        padding: 8px;
+      }
+      .testimonial-box {
+        font-size: 0.95em;
+        padding: 18px;
+      }
+    }
 
-  /* ---------- Floating effects ---------- */
-  .float-blob{position:absolute; width:160px; height:160px; border-radius:50%; filter:blur(30px); opacity:0.12; z-index:0}
-  .blob-1{background:linear-gradient(90deg,#6fa8ff,#bfe1ff); top:-40px; right:-40px}
-  .blob-2{background:linear-gradient(90deg,#a9f, #ffd1f2); bottom:-50px; left:-30px}
+    /* Standard Phones - 480px to 600px */
+    @media screen and (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        padding: 8px 10px;
+        gap: 8px;
+      }
+      .logo-container img {
+        height: 35px;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 4px;
+        width: 100%;
+      }
+      nav ul li {
+        width: 100%;
+        text-align: center;
+      }
+      nav ul li a {
+        font-size: 0.9em;
+        padding: 8px 10px;
+        width: 100%;
+      }
+      .section {
+        padding: 10px 5px;
+        margin-top: 200px;
+      }
+      .carousel {
+        height: 160px;
+        border-radius: 10px;
+      }
+      .carousel button {
+        padding: 8px;
+        font-size: 16px;
+      }
+      .prev { left: 8px; }
+      .next { right: 8px; }
+      marquee {
+        font-size: 0.9em;
+        max-width: 95vw;
+      }
+      .about-us h2, .contact-us-home h2 {
+        font-size: 1.2em;
+        margin-bottom: 12px;
+      }
+      .about-us p {
+        font-size: 0.9em;
+        padding: 10px 12px;
+      }
+      .feature-card {
+        padding: 15px 12px;
+        max-width: 95vw;
+      }
+      .feature-card .feat-title {
+        font-size: 1em;
+      }
+      .feature-list {
+        font-size: 0.9em;
+        line-height: 1.8em;
+      }
+      .contact-row {
+        gap: 12px;
+      }
+      .contact-btn {
+        font-size: 0.95em;
+        padding: 10px 14px;
+        width: 90%;
+      }
+      .social-icons a {
+        font-size: 26px;
+        margin: 0 10px;
+      }
+      .testimonial-box {
+        font-size: 0.9em;
+        padding: 15px;
+        margin: 25px 10px 0;
+      }
+      .testimonial-box:before {
+        font-size: 1.8em;
+        left: 10px;
+      }
+    }
 
-  /* Responsive tweaks */
-  @media(max-width:720px){ .banner img{height:220px} table{min-width:unset} }
+    /* Small Phones - 375px to 480px */
+    @media screen and (max-width: 480px) {
+      nav {
+        padding: 6px 8px;
+      }
+      .logo-container img {
+        height: 32px;
+      }
+      nav ul li a {
+        font-size: 0.85em;
+        padding: 7px 8px;
+      }
+      .section {
+        margin-top: 210px;
+      }
+      .carousel {
+        height: 140px;
+      }
+      marquee {
+        font-size: 0.85em;
+        padding: 6px;
+      }
+      .about-us h2, .contact-us-home h2 {
+        font-size: 1.1em;
+      }
+      .about-us p {
+        font-size: 0.85em;
+      }
+      .feature-card .card-icon {
+        font-size: 1.5em;
+      }
+      .contact-btn {
+        font-size: 0.9em;
+        padding: 9px 12px;
+      }
+      .contact-btn img {
+        width: 18px;
+      }
+      .social-icons a {
+        font-size: 24px;
+        padding: 7px;
+      }
+    }
 
-  /* subtle entrance */
-  .fade-in-up{animation:fadeUp .6s ease both}
-  @keyframes fadeUp{ from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none} }
+    /* Very Small Phones - below 375px */
+    @media screen and (max-width: 375px) {
+      nav {
+        padding: 5px 6px;
+      }
+      .logo-container img {
+        height: 28px;
+      }
+      nav ul li a {
+        font-size: 0.8em;
+        padding: 6px 8px;
+      }
+      .section {
+        margin-top: 220px;
+        padding: 8px 3px;
+      }
+      .carousel {
+        height: 120px;
+        border-radius: 8px;
+      }
+      .carousel button {
+        padding: 6px;
+        font-size: 14px;
+      }
+      marquee {
+        font-size: 0.8em;
+      }
+      .about-us h2, .contact-us-home h2 {
+        font-size: 1em;
+      }
+      .about-us p {
+        font-size: 0.8em;
+        padding: 8px 10px;
+      }
+      .feature-card {
+        padding: 12px 10px;
+      }
+      .feature-card .feat-title {
+        font-size: 0.95em;
+      }
+      .feature-list {
+        font-size: 0.85em;
+        padding-left: 12px;
+      }
+      .contact-btn {
+        font-size: 0.85em;
+        padding: 8px 10px;
+      }
+      .social-icons a {
+        font-size: 22px;
+        margin: 0 8px;
+      }
+      .testimonial-box {
+        font-size: 0.85em;
+        padding: 12px;
+      }
+    }
 
-</style>
+    /* Landscape Mode for Phones */
+    @media screen and (max-height: 500px) and (orientation: landscape) {
+      nav {
+        flex-direction: row;
+        padding: 5px 15px;
+        min-height: 50px;
+      }
+      .logo-container {
+        width: auto;
+      }
+      .logo-container img {
+        height: 35px;
+      }
+      nav ul {
+        flex-direction: row;
+        gap: 10px;
+      }
+      nav ul li a {
+        font-size: 0.85em;
+        padding: 5px 8px;
+      }
+      .section {
+        margin-top: 70px;
+      }
+      .carousel {
+        height: 200px;
+      }
+    }
+
+    /* iPad Pro and Large Tablets - 1024px to 1366px */
+    @media screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+      nav {
+        padding: 12px 25px;
+      }
+      nav ul {
+        gap: 18px;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<header>
-  <div style="display:flex; gap:12px; align-items:center">
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24'%3E%3Crect fill='%23fff' opacity='0.06' width='24' height='24' rx='6'/%3E%3Cpath fill='%23fff' d='M12 2L2 7v7c0 5 7 9 10 9s10-4 10-9V7L12 2z'/%3E%3C/svg%3E" alt="logo" style="width:38px;height:38px;border-radius:8px" />
-    <h1>College Consultancy</h1>
-  </div>
-
+  nvasvas id="animated-bg"></canvas>
   <nav>
-    <a href="#home" class="navlink active" data-target="home">Home</a>
-    <a href="#colleges" class="navlink" data-target="colleges">Colleges</a>
-    <a href="#about" class="navlink" data-target="about">About</a>
-    <a href="#contact" class="navlink" data-target="contact">Contact</a>
+    <div class="logo-container">
+      <img src="project image/logo.jpg" alt="Vision Bridge Consultancy Logo">
+    </div>
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li><a href="colleges.html">List of Colleges</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact us.html">Contact Us</a></li>
+    </ul>
   </nav>
-</header>
-
-<main class="container">
-  <!-- HOME -->
-  <section id="home" class="page">
-    <div class="home-grid">
-      <div>
-        <!-- Banner -->
-        <div class="banner card fade-in-up" id="banner">
-          <img id="banner-img" src="" alt="banner">
-          <div class="banner-caption" id="banner-caption">Welcome — choose your path</div>
-          <div class="banner-sub">Personalized • Elegant • Smooth</div>
+  <div class="section active" id="home">
+    <marquee>Announcement: New colleges added! Check out our latest partnerships and placement results.</marquee>
+    <div class="carousel">
+      <img src="https://via.placeholder.com/800x400?text=College+Banner+1" class="active">
+      <img src="https://via.placeholder.com/800x400?text=College+Banner+2">
+      <img src="https://via.placeholder.com/800x400?text=College+Banner+3">
+      <button class="prev" onclick="prevSlide()"><i class="fa fa-chevron-left"></i></button>
+      <button class="next" onclick="nextSlide()"><i class="fa fa-chevron-right"></i></button>
+    </div>
+    <div class="about-us">
+      <h2>Vision Bridge Consultancy</h2>
+      <p>
+        With offices in Chennai and Andhra Pradesh, Vision Bridge Consultancy has been a trusted partner in education for 7+ years. We specialize in engineering and medical education, empowering students and institutions to achieve their goals and bridging the gap between education and industry.
+      </p>
+      <div class="feature-cards-row">
+        <div class="feature-card">
+          <span class="card-icon">⚙️</span>
+          <div class="feat-title">Tamil Nadu (Engineering)</div>
+          <ul class="feature-list">
+            <li>Admissions guidance</li>
+            <li>Career counseling</li>
+            <li>Industry-academia collaborations</li>
+            <li>Research and development support</li>
+          </ul>
         </div>
-        
-        <div class="about-card card fade-in-up">
-          <h3>About Us (preview)</h3>
-          <p id="about-preview">We help students choose the best colleges based on their goals and profiles. Click "About" for full detail.</p>
-          <a href="#about" class="btn" style="margin-top:8px; display:inline-block; padding:8px 12px; background:var(--accent); color:#fff; border-radius:8px; text-decoration:none; font-weight:800">Read More</a>
-        </div>
-
-        <!-- Colleges table -->
-        <div class="table-card card" id="colleges-table-card" style="margin-top:18px">
-          <h3 style="margin:0">College Highlights</h3>
-          <p class="muted" style="margin-top:6px">Browse colleges and open details in a clean preview card.</p>
-          <div style="overflow:auto; margin-top:10px">
-            <table id="colleges-table">
-              <thead>
-                <tr><th>Name</th><th>Location</th><th>Courses</th><th>Seats</th><th>Actions</th></tr>
-              </thead>
-              <tbody id="colleges-tbody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <!-- about preview -->
-        
-
-        <!-- contact preview with map -->
-        <div class="contact-card card" style="margin-top:14px">
-          <h3>Contact Us</h3>
-          <p class="muted">Visit our office or drop a message.</p>
-          <iframe class="map-preview" id="map-frame" src="" loading="lazy" style="width:100%; height:180px; border:0; border-radius:8px; overflow:hidden"></iframe>
-          <p style="margin-top:8px">Phone: <strong id="phone">+91 12345 67890</strong></p>
-          <p>Email: <strong id="email">info@consultancy.example</strong></p>
-          <a href="#contact" class="btn" style="margin-top:8px; display:inline-block; padding:8px 12px; background:var(--accent); color:#fff; border-radius:8px; text-decoration:none; font-weight:800">Full Contact</a>
+        <div class="feature-card">
+          <span class="card-icon">🏥</span>
+          <div class="feat-title">Andhra Pradesh (Medical)</div>
+          <ul class="feature-list">
+            <li>Curriculum development</li>
+            <li>Research initiatives</li>
+            <li>Clinical exposure</li>
+            <li>Internship opportunities</li>
+          </ul>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Colleges "page" -->
-  <section id="colleges" class="page hide" style="margin-top:18px">
-    <div class="card table-card">
-      <div style="display:flex;align-items:center">
-        <h2 style="margin:0">All Colleges</h2>
-      </div>
-      <p class="muted">Click "View" to open a detailed preview of a college.</p>
-      <table style="margin-top:12px">
-        <thead><tr><th>Name</th><th>Location</th><th>Courses</th><th>Seats</th><th>Actions</th></tr></thead>
-        <tbody id="colleges-full-tbody"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- About -->
-  <section id="about" class="page hide" style="margin-top:18px">
-    <div class="about-card card">
-      <h2>About Us</h2>
-      <p id="about-full">College Consultancy is dedicated to helping students navigate the complex process of selecting tertiary institutions. We provide personalized consultations, college comparisons, scholarship guidance and application assistance. Our team consists of experienced education counselors and academic advisors.</p>
-      <h4>Our Mission</h4>
-      <p>To empower students with data-driven guidance so they can select colleges that match their academic strengths, career goals and budgets.</p>
-      <h4>What we offer</h4>
-      <ul>
-        <li>Personal profile evaluation</li>
-        <li>College shortlisting</li>
-        <li>Application & essay support</li>
-        <li>Scholarship & financial aid guidance</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="page hide" style="margin-top:18px">
-    <div class="contact-card card">
-      <h2>Contact Us</h2>
-      <p>Office Hours: Mon-Fri 9:30am - 6:30pm</p>
-      <p>Address: <span id="address-display">123, Education Lane, City</span></p>
-      <p>Phone: <strong id="phone-full">+91 12345 67890</strong></p>
-      <p>Email: <strong id="email-full">info@consultancy.example</strong></p>
-      <iframe id="map-full" src="" style="width:100%; height:360px; border:0; border-radius:8px; margin-top:12px;"></iframe>
-    </div>
-  </section>
-
-</main>
-
-<!-- View modal (used to pop up college details) -->
-<div id="view-modal-backdrop" class="modal-backdrop hide" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div style="display:flex; gap:10px; align-items:center">
-      <h3 id="modal-title">College Title</h3>
-      <button id="modal-close" class="close-x right" aria-label="Close">✕</button>
-    </div>
-    <p class="meta" id="modal-meta">Location • Courses • Seats</p>
-    <div style="margin-top:12px; display:flex; gap:14px; align-items:flex-start">
-      <img id="modal-image" src="" alt="college" style="width:160px; height:110px; object-fit:cover; border-radius:10px; box-shadow:0 12px 30px rgba(8,12,30,0.08)">
-      <div>
-        <p id="modal-desc" style="margin:0 0 8px">Detailed description of the college goes here. This area is a friendly preview with key facts and a short blurb.</p>
-        <ul id="modal-bullets" style="margin:6px 0 0 18px"></ul>
+      <div class="contact-row">
+        <a class="contact-btn" href="https://wa.me/9866745085" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp">9866745085</a>
+        <a class="contact-btn" href="https://wa.me/8330914141" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp">8330914141</a>
+        <a class="contact-btn" href="https://wa.me/9941015004" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp">9941015004</a>
       </div>
     </div>
-    <div style="margin-top:14px; display:flex; gap:8px; justify-content:flex-end">
-      <a id="modal-visit" href="#" class="btn" style="padding:8px 12px; background:var(--accent); color:#fff; border-radius:8px; text-decoration:none; font-weight:800">Visit Website</a>
-      <button id="modal-close-2" class="btn ghost" style="background:transparent; border:2px solid rgba(11,116,218,0.08);">Close</button>
+    <div class="testimonial-box">
+      Vision Bridge Consultancy helped us secure our dream college and provided invaluable career guidance. The team's expertise and dedication made all the difference!
+      <span class="testimonial-author">– Recent Student, Chennai</span>
+    </div>
+    <div class="contact-us-home">
+      <h2>Quick Contact & Social</h2>
+      <div class="social-icons">
+        <a href="https://instagram.com/visionconsultancy" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="mailto:info@visionconsultancy.com"><i class="fas fa-envelope"></i></a>
+        <a href="https://facebook.com/visionconsultancy" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://twitter.com/visionconsultancy" target="_blank"><i class="fab fa-twitter"></i></a>
+      </div>
     </div>
   </div>
-</div>
+  <script>
+    // Carousel fade + mobile swipe support
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel img');
+    function showSlide(index) {
+      slides.forEach((slide, i) => slide.classList.remove('active'));
+      slides[index].classList.add('active');
+    }
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+    if (slides.length > 0) setInterval(nextSlide, 3500);
+    // Swipe support
+    let startX = null;
+    document.querySelector('.carousel').addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+    });
+    document.querySelector('.carousel').addEventListener('touchend', function(e) {
+      if(startX !== null){
+        let endX = e.changedTouches[0].clientX;
+        if(endX - startX > 60) prevSlide();
+        else if(startX - endX > 60) nextSlide();
+        startX=null;
+      }
+    });
 
-<footer>
-  © <span id="year"></span> College Consultancy — refined demo
-</footer>
-
-<script>
-/* =========================
-   Refined single-file site script
-   - LocalStorage-backed
-   - Admin/editor tools removed
-   - Colleges open in a modal instead of alerts
-   - Subtle animations added via CSS
-   ========================= */
-
-// ---------- Utilities ----------
-const $ = (s, root=document) => root.querySelector(s);
-const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
-const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-
-// ---------- Default seed data (announcements removed) ----------
-const defaultData = {
-  banners: [
-    {id:uid(), url:'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=9c6a2b2e7e9b381c2b6a3d0bc6e6a1b9', caption:'Start your journey with the right college'},
-    {id:uid(), url:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=0599061f6ff9ec2a8c3d9a03c2c8c3c0', caption:'Personal guidance, tailored plans'}
-  ],
-  colleges: [
-    {id:uid(), name:'National Institute of Technology', location:'City A', courses:'Engineering, CS, Mathematics', seats:120, img:'https://images.unsplash.com/photo-1531219432768-7b3adf7b5c3b?q=80&w=800&auto=format&fit=crop'},
-    {id:uid(), name:'City Arts & Science College', location:'City B', courses:'Arts, Commerce, Science', seats:80, img:'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=800&auto=format&fit=crop'}
-  ],
-  siteInfo: {
-    phone: '+91 12345 67890',
-    email: 'info@consultancy.example',
-    address: '123, Education Lane, City',
-    mapCoords: {lat:35.6895, lon:139.6917}
-  }
-};
-
-// ---------- Storage helpers ----------
-function loadState(){
-  const raw = localStorage.getItem('cc_data_v2');
-  if(!raw){ localStorage.setItem('cc_data_v2', JSON.stringify(defaultData)); return JSON.parse(JSON.stringify(defaultData)); }
-  try{ return JSON.parse(raw); }catch(e){ console.error('Corrupt storage, resetting', e); localStorage.setItem('cc_data_v2', JSON.stringify(defaultData)); return JSON.parse(JSON.stringify(defaultData)); }
-}
-function saveState(state){ localStorage.setItem('cc_data_v2', JSON.stringify(state)); }
-let state = loadState();
-
-// ---------- Navigation ----------
-const navlinks = $$('.navlink');
-navlinks.forEach(a => {
-  a.addEventListener('click', (e)=>{
-    e.preventDefault();
-    showPage(a.dataset.target);
-    navlinks.forEach(n=>n.classList.remove('active'));
-    a.classList.add('active');
-  });
-});
-function showPage(target){
-  $$('.page').forEach(p=>p.classList.add('hide'));
-  const sel = document.getElementById(target);
-  if(sel) sel.classList.remove('hide');
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-// ---------- Banner slider ----------
-let bannerIndex = 0;
-function renderBanner(){
-  const banners = state.banners || [];
-  if(banners.length === 0){ $('#banner-img').src = ''; $('#banner-caption').textContent = ''; return; }
-  bannerIndex = bannerIndex % banners.length;
-  const b = banners[bannerIndex];
-  $('#banner-img').src = b.url;
-  $('#banner-caption').textContent = b.caption || '';
-}
-function nextBanner(){ bannerIndex++; renderBanner(); }
-setInterval(nextBanner, 6000);
-
-// ---------- Colleges rendering (no admin controls) ----------
-function renderColleges(){
-  const tbody = $('#colleges-tbody'); tbody.innerHTML = '';
-  const tbody2 = $('#colleges-full-tbody'); tbody2.innerHTML = '';
-
-  (state.colleges || []).forEach(c=>{
-    // small table row
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.location)}</td><td>${escapeHtml(c.courses)}</td><td>${c.seats||''}</td><td><button class="action-btn view-btn" data-id="${c.id}">View</button></td>`;
-    tbody.appendChild(tr);
-
-    // full table row
-    const tr2 = document.createElement('tr');
-    tr2.innerHTML = `<td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.location)}</td><td>${escapeHtml(c.courses)}</td><td>${c.seats||''}</td><td><button class="action-btn view-btn" data-id="${c.id}">View</button></td>`;
-    tbody2.appendChild(tr2);
-  });
-
-  // attach view handlers
-  $$('.view-btn').forEach(b=> b.addEventListener('click', ()=>{
-    const id = b.dataset.id;
-    const col = state.colleges.find(x=>x.id===id);
-    if(col) openCollegeModal(col);
-  }));
-}
-
-// ---------- Site Info (maps, contact) ----------
-function renderSiteInfo(){
-  $('#phone').textContent = state.siteInfo?.phone || '';
-  $('#email').textContent = state.siteInfo?.email || '';
-  $('#phone-full').textContent = state.siteInfo?.phone || '';
-  $('#email-full').textContent = state.siteInfo?.email || '';
-  $('#address-display').textContent = state.siteInfo?.address || '';
-  const coords = state.siteInfo?.mapCoords || {lat:35.6895, lon:139.6917};
-  const mapPreviewSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${coords.lon-0.02}%2C${coords.lat-0.01}%2C${coords.lon+0.02}%2C${coords.lat+0.01}&layer=mapnik&marker=${coords.lat}%2C${coords.lon}`;
-  $('#map-frame').src = mapPreviewSrc;
-  $('#map-full').src = mapPreviewSrc;
-}
-
-// ---------- Modal (college view) ----------
-const modalBackdrop = $('#view-modal-backdrop');
-const modalTitle = $('#modal-title');
-const modalMeta = $('#modal-meta');
-const modalImage = $('#modal-image');
-const modalDesc = $('#modal-desc');
-const modalBullets = $('#modal-bullets');
-const modalVisit = $('#modal-visit');
-const modalClose = $('#modal-close');
-const modalClose2 = $('#modal-close-2');
-
-function openCollegeModal(col){
-  modalTitle.textContent = col.name;
-  modalMeta.textContent = `${col.location} • ${col.courses} • ${col.seats || 'N/A'} seats`;
-  modalImage.src = col.img || state.banners?.[0]?.url || '';
-  modalDesc.textContent = `A short preview for ${col.name}. We recommend checking the official site for admissions, fees and latest seat availability.`;
-  modalBullets.innerHTML = '';
-  const bullets = (col.courses||'').split(',').map(s=>s.trim()).filter(Boolean);
-  bullets.slice(0,4).forEach(b=>{ const li = document.createElement('li'); li.textContent = b; modalBullets.appendChild(li); });
-  modalVisit.href = '#';
-
-  modalBackdrop.classList.remove('hide');
-  setTimeout(()=> modalBackdrop.classList.add('show'), 10);
-}
-function closeCollegeModal(){
-  modalBackdrop.classList.remove('show');
-  setTimeout(()=> modalBackdrop.classList.add('hide'), 250);
-}
-modalClose.addEventListener('click', closeCollegeModal);
-modalClose2.addEventListener('click', closeCollegeModal);
-modalBackdrop.addEventListener('click', (e)=>{ if(e.target === modalBackdrop) closeCollegeModal(); });
-
-// ---------- Helpers ----------
-function renderAll(){ renderBanner(); renderColleges(); renderSiteInfo(); $('#year').textContent = new Date().getFullYear(); }
-function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>\"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','\\"':'&quot;',"'":'&#39;' })[m]); }
-
-// small page actions
-window.viewCollege = function(id){ const c = state.colleges.find(x=>x.id===id); if(!c) return; openCollegeModal(c); };
-
-// init
-renderAll();
-showPage('home');
-
-</script>
+    // Bubbles + sparkles animated background
+    function resizeCanvas() {
+      const canvas = document.getElementById('animated-bg');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    const canvas = document.getElementById('animated-bg');
+    const ctx = canvas.getContext('2d');
+    const bubbles = []; const sparkles = [];
+    for (let i=0; i<18; i++){
+      bubbles.push({ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+        r: Math.random() * 28 + 17, dx: (Math.random()-0.5)*0.19, dy: (Math.random()-0.5)*0.12, alpha: Math.random()*0.09+0.08 });
+    }
+    for (let i=0; i<30; i++){
+      sparkles.push({ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+        r: Math.random() * 2.5 + 1.5, pulse: Math.random() * Math.PI * 2, speed: Math.random()*0.025+0.01 });
+    }
+    function drawBg() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      let grad = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+      grad.addColorStop(0,"#87cbff");
+      grad.addColorStop(0.45,"#f8f5fe");
+      grad.addColorStop(1,"#b2ecfc");
+      ctx.fillStyle=grad;
+      ctx.globalAlpha=1;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      // Bubbles
+      bubbles.forEach(b=>{
+        ctx.save();
+        ctx.globalAlpha=b.alpha;
+        ctx.beginPath();
+        ctx.arc(b.x,b.y,b.r,0,2*Math.PI);
+        ctx.fillStyle="rgba(255,255,255,0.62)";
+        ctx.shadowColor="#daefff";
+        ctx.shadowBlur=19;
+        ctx.fill();
+        ctx.restore();
+        b.x+=b.dx;
+        b.y+=b.dy;
+        if(b.x<0) b.x=canvas.width; if(b.x>canvas.width) b.x=0;
+        if(b.y<0) b.y=canvas.height; if(b.y>canvas.height) b.y=0;
+      });
+      // Sparkles
+      sparkles.forEach(s=>{
+        s.pulse += s.speed;
+        ctx.save();
+        ctx.globalAlpha = 0.49 + Math.sin(s.pulse)*0.43;
+        ctx.beginPath();
+        ctx.arc(s.x,s.y,s.r*(0.8+0.7*Math.abs(Math.sin(s.pulse))),0,2*Math.PI);
+        ctx.fillStyle = "#fff";
+        ctx.shadowColor = "#fff";
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.restore();
+      });
+      requestAnimationFrame(drawBg);
+    }
+    drawBg();
+  </script>
 </body>
 </html>
