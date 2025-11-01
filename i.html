@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vision Bridge Consultancy</title>
+<style>
+  /* Reset and base styles */
+  * {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  body {
+    background: linear-gradient(45deg, #1e3c72, #2a5298);
+    color: #f7f7f7;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a {
+    color: #ffde59;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: #ffe066;
+  }
+
+  /* Header */
+  header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px 50px;
+    position: fixed;
+    top: 0; width: 100%;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(8px);
+    transition: padding 0.3s ease;
+  }
+  header.shrink {
+    padding: 10px 50px;
+  }
+  header h1 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    color: #ffde59;
+    cursor: default;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+  }
+  nav a {
+    margin-left: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  nav a.active {
+    border-bottom: 2px solid #ffde59;
+  }
+  /* Hamburger Menu */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .hamburger div {
+    width: 25px;
+    height: 3px;
+    background-color: #ffde59;
+    margin: 4px 0;
+    transition: 0.4s;
+  }
+  .nav-open nav {
+    display: block;
+    position: absolute;
+    background: rgba(0,0,0,0.9);
+    top: 60px;
+    right: 0;
+    width: 200px;
+    padding: 20px;
+    border-radius: 0 0 0 10px;
+  }
+  .nav-open nav a {
+    display: block;
+    margin: 15px 0;
+  }
+
+  /* Sections */
+  section {
+    max-width: 1200px;
+    margin: 120px auto 50px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateY(40px);
+    animation-fill-mode: forwards;
+  }
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  h2 {
+    font-size: 2rem;
+    color: #ffde59;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 1.5px;
+  }
+  p, li {
+    font-size: 1.1rem;
+  }
+
+  /* Hero */
+  #hero {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+    background: linear-gradient(to right, #004e92, #000428);
+    color: #ffde59;
+    text-align: center;
+    padding: 0 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+  }
+  #hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    animation: fadeInDown 1s ease forwards;
+  }
+  #hero p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    animation: fadeInUp 1s ease forwards;
+  }
+  #hero button {
+    background: #ffde59;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    color: #1e3c72;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    animation: fadeInUp 1.4s ease forwards;
+  }
+  #hero button:hover {
+    background: #e6c84c;
+  }
+
+  /* Animations */
+  @keyframes fadeInDown {
+    0% {opacity: 0; transform: translateY(-20px);}
+    100% {opacity: 1; transform: translateY(0);}
+  }
+  @keyframes fadeInUp {
+    0% {opacity: 0; transform: translateY(20px);}
+    100% {opacity: 1; transform: translateY(0);}
+  }
+
+  /* About */
+  #about p {
+    max-width: 900px;
+    margin: 0 auto 20px auto;
+    text-align: center;
+  }
+  .counters {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 30px;
+  }
+  .counter-box {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 25px 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 150px;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.3);
+    cursor: default;
+  }
+  .counter-box h3 {
+    font-size: 2.8rem;
+    color: #ffde59;
+    margin-bottom: 10px;
+  }
+  .counter-box p {
+    font-size: 1.1rem;
+    color: #eee;
+  }
+
+  /* Services */
+  .service-category {
+    max-width: 900px;
+    margin: 0 auto 50px auto;
+  }
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  .card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    width: 260px;
+    box-shadow: 0 8px 25px rgb(0 0 0 / 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px #ffde59bb;
+    color: #1e3c72;
+    background: #ffde59;
+  }
+  .card h4 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  .card p {
+    font-size: 1rem;
+    color: inherit;
+  }
+
+  /* Colleges */
+  #colleges .cards {
+    max-width: 1000px;
+  }
+  .college-name {
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  /* Contact */
+  #contact {
+    max-width: 600px;
+    margin: 80px auto 100px auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgb(0 0 0 / 0.4);
+  }
+  #contact h2 {
+    margin-bottom: 25px;
+  }
+  .phone-list {
+    margin-bottom: 40px;
+  }
+  .phone-list span {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  input, textarea {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  button.submit-btn {
+    background-color: #ffde59;
+    border: none;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    color: #1e3c72;
+    transition: background-color 0.3s ease;
+  }
+  button.submit-btn:hover {
+    background-color: #e6c84c;
+  }
+  .form-message {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 600;
+  }
+
+  /* Footer */
+  footer {
+    background: #111c2d;
+    padding: 30px 50px;
+    text-align: center;
+    color: #aaa;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+  footer a {
+    margin: 0 10px;
+    color: #ffde59;
+  }
+
+  /* WhatsApp fixed button */
+  .whatsapp-link {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25d366;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 15px rgba(37, 211, 102, 0.6);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    z-index: 10000;
+  }
+  .whatsapp-link:hover {
+    transform: scale(1.15);
+  }
+  .whatsapp-link img {
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+  }
+
+  /* Responsive */
+  @media (max-width: 992px) {
+    .cards {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  @media (max-width: 768px) {
+    header {
+      padding: 15px 20px;
+    }
+    nav {
+      display: none;
+      flex-direction: column;
+      background: rgba(0,0,0,0.9);
+      position: absolute;
+      top: 60px;
+      right: 0;
+      width: 180px;
+      border-radius: 0 0 0 10px;
+      padding: 15px 20px;
+    }
+    nav a {
+      margin: 15px 0;
+    }
+    .hamburger {
+      display: flex;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <h1>Vision Bridge Consultancy</h1>
+  <div class="hamburger" id="hamburger" aria-label="Toggle navigation menu" tabindex="0">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <nav id="nav-menu" role="navigation" aria-label="Primary Navigation">
+    <a href="#hero" class="nav-link active">Home</a>
+    <a href="#about" class="nav-link">About</a>
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#colleges" class="nav-link">Colleges</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </nav>
+</header>
+
+<section id="hero" tabindex="0" aria-label="Introduction section">
+  <h1>Your Bridge to Excellence in Education</h1>
+  <p>Trusted education consultancy specializing in engineering and medical education with 7 years of experience.</p>
+  <button onclick="scrollToSection('contact')">Connect with Us</button>
+</section>
+
+<section id="about" aria-label="About Vision Bridge Consultancy">
+  <h2>About Vision Bridge Consultancy</h2>
+  <p>
+    With offices in Chennai and Andhra Pradesh, Vision Bridge Consultancy has been a trusted partner in the education sector for 7 years. Specializing in engineering and medical education,
+    we empower students and institutions to achieve their goals by bridging the gap between education and industry.
+  </p>
+  <div class="counters" aria-live="polite" aria-atomic="true" aria-relevant="all">
+    <div class="counter-box" aria-label="Years of experience">
+      <h3 id="counter-years">0</h3>
+      <p>Years of Experience</p>
+    </div>
+    <div class="counter-box" aria-label="Colleges partnered">
+      <h3 id="counter-colleges">0</h3>
+      <p>Colleges Partnered</p>
+    </div>
+    <div class="counter-box" aria-label="Students helped">
+      <h3 id="counter-students">0</h3>
+      <p>Students Helped</p>
+    </div>
+  </div>
+</section>
+
+<section id="services" aria-label="Services offered">
+  <h2>Our Services</h2>
+  <div class="service-category" aria-label="Engineering education services in Tamil Nadu">
+    <h3>Engineering Education Services (Tamil Nadu)</h3>
+    <div class="cards">
+      <div class="card" tabindex="0"><h4>Admissions Guidance</h4><p>Expert guidance for engineering college admissions.</p></div>
+      <div class="card" tabindex="0"><h4>Career Counseling</h4><p>Professional career path planning and guidance.</p></div>
+      <div class="card" tabindex="0"><h4>Industry-Academia Collaborations</h4><p>Connecting institutions with leading industries.</p></div>
+      <div class="card" tabindex="0"><h4>Research and Development Support</h4><p>Comprehensive research support for engineering programs.</p></div>
+      <div class="card" tabindex="0"><h4>Student Placement Assistance</h4><p>Helping students secure jobs in top companies.</p></div>
+      <div class="card" tabindex="0"><h4>Curriculum Improvement Support</h4><p>Enhancing academic programs and infrastructure.</p></div>
+    </div>
+  </div>
+
+  <div class="service-category" aria-label="Medical education services in Andhra Pradesh">
+    <h3>Medical Education Services (Andhra Pradesh)</h3>
+    <div class="cards">
+      <div class="card" tabindex="0"><h4>Curriculum Development</h4><p>Modern medical curriculum design and implementation.</p></div>
+      <div class="card" tabindex="0"><h4>Research Initiatives</h4><p>Advanced research program development.</p></div>
+      <div class="card" tabindex="0"><h4>Clinical Exposure</h4><p>Practical clinical training opportunities.</p></div>
+      <div class="card" tabindex="0"><h4>Internship Opportunities</h4><p>Hands-on internship and practical experience.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="colleges" aria-label="Partner colleges">
+  <h2>Trusted by Leading Institutions</h2>
+  <div class="cards" aria-live="polite">
+    <div class="card" tabindex="0">
+      <p class="college-name">Dhanlakshmi College of Engineering</p>
+      <p>Known for engineering programs and research initiatives.</p>
+    </div>
+    <div class="card" tabindex="0">
+      <p class="college-name">Kings Engineering College</p>
+      <p>Courses focused on practical training and industry exposure.</p>
+    </div>
+    <div class="card" tabindex="0">
+      <p class="college-name">DMI Engineering College</p>
+      <p>Innovation, entrepreneurship, and industry-focused education.</p>
+    </div>
+    <div class="card" tabindex="0">
+      <p class="college-name">RM Engineering College</p>
+      <p>Research excellence with state-of-the-art infrastructure.</p>
+    </div>
+    <div class="card" tabindex="0">
+      <p class="college-name">Aarupadai Veedu Institute of Technology (AVIT)</p>
+      <p>Strong faculty expertise and extensive industry partnerships.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" aria-label="Contact Vision Bridge Consultancy">
+  <h2>Contact Us</h2>
+  <div class="phone-list">
+    <span>Chennai: <a href="tel:+919866745085">9866745085</a>, <a href="tel:+918330914141">8330914141</a></span>
+    <span>Andhra Pradesh: <a href="tel:+919941015004">9941015004</a></span>
+  </div>
+  <form id="contact-form" novalidate>
+    <label for="name">Name *</label>
+    <input type="text" id="name" name="name" placeholder="Your full name" required aria-required="true" aria-describedby="name-error" />
+    <div id="name-error" aria-live="polite" style="color:#ffdf59;"></div>
+
+    <label for="email">Email *</label>
+    <input type="email" id="email" name="email" placeholder="you@example.com" required aria-required="true" aria-describedby="email-error" />
+    <div id="email-error" aria-live="polite" style="color:#ffdf59;"></div>
+
+    <label for="phone">Phone</label>
+    <input type="tel" id="phone" name="phone" placeholder="+91XXXXXXXXXX" aria-describedby="phone-error" />
+    <div id="phone-error" aria-live="polite" style="color:#ffdf59;"></div>
+
+    <label for="subject">Subject *</label>
+    <input type="text" id="subject" name="subject" placeholder="Subject of your message" required aria-required="true" aria-describedby="subject-error" />
+    <div id="subject-error" aria-live="polite" style="color:#ffdf59;"></div>
+
+    <label for="message">Message *</label>
+    <textarea id="message" name="message" placeholder="Write your message here..." required aria-required="true" aria-describedby="message-error"></textarea>
+    <div id="message-error" aria-live="polite" style="color:#ffdf59;"></div>
+
+    <button type="submit" class="submit-btn">Send Message</button>
+    <p class="form-message" aria-live="polite"></p>
+  </form>
+</section>
+
+<a href="https://wa.me/919866745085" target="_blank" rel="noopener" aria-label="Chat with Vision Bridge Consultancy on WhatsApp" class="whatsapp-link">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" />
+</a>
+
+<footer>
+  <p>&copy; 2025 Vision Bridge Consultancy. All rights reserved.</p>
+  <p>
+    <a href="#hero">Home</a> |
+    <a href="#about">About</a> |
+    <a href="#services">Services</a> |
+    <a href="#colleges">Colleges</a> |
+    <a href="#contact">Contact</a>
+  </p>
+</footer>
+
+<script>
+  // Sticky header shrink on scroll
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 50) {
+      header.classList.add('shrink');
+    } else {
+      header.classList.remove('shrink');
+    }
+  });
+
+  // Mobile menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const body = document.body;
+  hamburger.addEventListener('click', () => {
+    body.classList.toggle('nav-open');
+  });
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetID = this.getAttribute('href').slice(1);
+      scrollToSection(targetID);
+      if(body.classList.contains('nav-open')) body.classList.remove('nav-open');
+    });
+  });
+
+  function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+  }
+
+  // Animate sections on scroll
+  const sections = document.querySelectorAll('section');
+  function revealOnScroll() {
+    const triggerBottom = window.innerHeight * 0.85;
+    sections.forEach(section => {
+      const boxTop = section.getBoundingClientRect().top;
+      if(boxTop < triggerBottom) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealOnScroll);
+  revealOnScroll();
+
+  // Animated counters
+  function animateCounter(id, target) {
+    let count = 0;
+    const element = document.getElementById(id);
+    const increment = Math.ceil(target / 100);
+    const interval = setInterval(() => {
+      count += increment;
+      if(count >= target) {
+        element.textContent = target;
+        clearInterval(interval);
+      } else {
+        element.textContent = count;
+      }
+    }, 20);
+  }
+  // Start counters when about section is in view
+  let countersStarted = false;
+  function checkCounters(){
+    const about = document.getElementById('about');
+    const triggerPoint = window.innerHeight;
+    if(!countersStarted && about.getBoundingClientRect().top < triggerPoint) {
+      countersStarted = true;
+      animateCounter('counter-years', 7);
+      animateCounter('counter-colleges', 5);
+      animateCounter('counter-students', 1200); // estimated number
+    }
+  }
+  window.addEventListener('scroll', checkCounters);
+  checkCounters();
+
+  // Form validation
+  const form = document.getElementById('contact-form');
+  const formMessage = form.querySelector('.form-message');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    clearErrors();
+    let valid = true;
+
+    if(!form.name.value.trim()) {
+      setError('name-error', 'Name is required');
+      valid = false;
+    }
+    if(!form.email.value.trim()) {
+      setError('email-error', 'Email is required');
+      valid = false;
+    } else if(!/\S+@\S+\.\S+/.test(form.email.value)) {
+      setError('email-error', 'Enter a valid email');
+      valid = false;
+    }
+    if(form.phone.value.trim() && !/^\+?\d{7,15}$/.test(form.phone.value.trim())) {
+      setError('phone-error', 'Enter a valid phone number');
+      valid = false;
+    }
+    if(!form.subject.value.trim()) {
+      setError('subject-error', 'Subject is required');
+      valid = false;
+    }
+    if(!form.message.value.trim()) {
+      setError('message-error', 'Message is required');
+      valid = false;
+    }
+
+    if(valid) {
+      formMessage.style.color = '#4ade80'; // green color
+      formMessage.textContent = 'Thank you! Your message has been sent (simulated). We will contact you shortly.';
+      form.reset();
+    } else {
+      formMessage.style.color = '#ffdf59'; // yellow color
+      formMessage.textContent = 'Please fix the errors above and try again.';
+    }
+  });
+
+  function setError(id, message) {
+    document.getElementById(id).textContent = message;
+  }
+  function clearErrors() {
+    ['name-error','email-error','phone-error','subject-error','message-error'].forEach(id => {
+      document.getElementById(id).textContent = '';
+    });
+    formMessage.textContent = '';
+  }
+</script>
+
+</body>
+</html>
