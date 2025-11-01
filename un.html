@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vision Consultancy | List of Colleges</title>
+  <link rel="icon" type="image/jpeg" href="project image/logo.jpg" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  />
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: Arial, sans-serif;
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background: transparent;
+    }
+
+    /* BACKGROUND GIF OVERLAY */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('project_image/bgg.gif') center center/cover no-repeat fixed;
+      z-index: -1;
+      opacity: 0.75;
+      pointer-events: none;
+      filter: brightness(0.8) contrast(1.1);
+    }
+
+    #star-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    nav {
+      background: rgba(51, 51, 51, 0.90);
+      color: #fff;
+      padding: 10px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      font-weight: bold;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+      padding: 8px 6px;
+      display: inline-block;
+    }
+    nav ul li a:hover {
+      color: #ffcc00;
+    }
+
+    .section {
+      margin-top: 80px;
+      padding: 12px 10px;
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      text-align: center;
+      color: #fff;
+      text-shadow: 1px 1px 6px #222;
+      font-size: 1.9em;
+      margin-bottom: 18px;
+      user-select:none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      font-size: 1em;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 14px 18px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #333;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .college-link {
+      color: #007bff;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+    }
+    .college-link:hover {
+      color: #0056b3;
+    }
+
+    /* MOBILE RESPONSIVENESS */
+    @media (max-width: 768px) {
+      nav ul {
+        justify-content: space-around;
+      }
+      .section {
+        margin-top: 110px;
+        padding: 10px 8px;
+      }
+      table {
+        font-size: 0.9em;
+      }
+      th, td {
+        padding: 10px 12px;
+      }
+      h2 {
+        font-size: 1.6em;
+      }
+      nav ul li {
+        margin: 0 8px;
+      }
+    }
+    @media (max-width: 480px) {
+      nav ul {
+        flex-direction: column;
+        gap: 8px;
+      }
+      nav ul li {
+        margin: 0;
+      }
+      table {
+        font-size: 0.85em;
+      }
+      th, td {
+        padding: 8px 10px;
+      }
+      h2 {
+        font-size: 1.4em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- <canvas id="star-canvas"></canvas> -->
+
+  <nav>
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li><a href="colleges.html">List of Colleges</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact us.html">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <div class="section">
+    <h2>List of Colleges</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>College ID</th>
+          <th>College Name</th>
+          <th>Degree/Course</th>
+          <th>Placement Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><span class="college-link" onclick="openCollege('https://www.dhanalakshmieng.ac.in')">Dhanalakshmi College of Engineering</span></td>
+          <td>B.E. (CSE, ECE, EEE, Mech, Civil)</td>
+          <td>80%</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><span class="college-link" onclick="openCollege('https://www.kingsedu.ac.in/')">Kings Engineering College</span></td>
+          <td>B.E. (CSE, EEE, Mech, Civil), M.E., MBA</td>
+          <td>75%</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><span class="college-link" onclick="openCollege('https://dmice.ac.in/')">DMI Engineering College</span></td>
+          <td>B.E. (CSE, ECE, Mech, Civil)</td>
+          <td>85%</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><span class="college-link" onclick="openCollege('https://www.rmengineeringcollege.com/')">RM Engineering College</span></td>
+          <td>B.E. (CSE, ECE, Mech, Civil)</td>
+          <td>70%</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><span class="college-link" onclick="openCollege('https://avit.ac.in/')">Aarupadai Veedu Institute of Technology (AVIT)</span></td>
+          <td>B.E. (CSE, EEE, Mech, Civil, Biotech, IT), M.E., MBA, MCA</td>
+          <td>90%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function openCollege(url) {
+      window.open(url, "_blank");
+    }
+
+    // Star animation on canvas
+    const canvas = document.getElementById("star-canvas");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    const numStars = 180;
+    const stars = [];
+    for (let i = 0; i < numStars; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.4,
+        dx: (Math.random() - 0.5) * 0.18,
+        dy: (Math.random() - 0.5) * 0.12,
+        alpha: Math.random() * 0.8 + 0.2,
+      });
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Galaxy background gradient
+      const gradient = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        canvas.width / 6,
+        canvas.width / 2,
+        canvas.height / 2,
+        canvas.width
+      );
+      gradient.addColorStop(0, "#222033");
+      gradient.addColorStop(1, "#070722");
+      ctx.fillStyle = gradient;
+      ctx.globalAlpha = 0.92;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw stars
+      stars.forEach((star) => {
+        ctx.save();
+        ctx.globalAlpha = star.alpha;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r, 0, 2 * Math.PI);
+        ctx.fillStyle = "#fff";
+        ctx.shadowColor = "#ddeeff";
+        ctx.shadowBlur = 14;
+        ctx.fill();
+        ctx.restore();
+
+        // Move stars for twinkling effect
+        star.x += star.dx;
+        star.y += star.dy;
+        if (star.x < 0) star.x = canvas.width;
+        if (star.x > canvas.width) star.x = 0;
+        if (star.y < 0) star.y = canvas.height;
+        if (star.y > canvas.height) star.y = 0;
+      });
+
+      requestAnimationFrame(drawStars);
+    }
+
+    drawStars();
+  </script>
+</body>
+</html>
